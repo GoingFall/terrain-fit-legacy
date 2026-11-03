@@ -31,8 +31,9 @@ CACHE = Path("_tpl")
 
 
 # ----------------------------------------------------------------- density helpers
-def const(v: float) -> dict:
-    return {"type": "minecraft:constant", "value": v}
+def const(v: float):
+    """Operands may be bare numbers; that is what vanilla's own density functions do."""
+    return float(v)
 
 
 def add(a: dict, b: dict) -> dict:
@@ -69,8 +70,20 @@ def spline(coord, points: list[tuple[float, float]]) -> dict:
     }}
 
 
-def smoothstep_spline(coord: dict, lo: float, hi: float, lo_v: float = 0.0, hi_v: float = 1.0) -> dict:
-    return spline(coord, [(-1.0, lo_v), (lo, lo_v), (hi, hi_v), (1.0, hi_v)])
+def smoothstep_spline(coord, lo: float, hi: float, lo_v: float = 0.0, hi_v: float = 1.0) -> dict:
+    """Spline step from lo to hi. Locations must be strictly increasing and inside (-1, 1),
+    otherwise duplicate points are emitted and the pack fails to parse."""
+    eps = 1e-3
+    lo = max(-1.0 + eps, min(1.0 - 2 * eps, lo))
+    hi = max(lo + eps, min(1.0 - eps, hi))
+    pts = [(-1.0, lo_v), (lo, lo_v), (hi, hi_v), (1.0, hi_v)]
+    dedup = []
+    for x, y in pts:
+        if dedup and abs(x - dedup[-1][0]) < 1e-6:
+            dedup[-1] = (x, y)
+        else:
+            dedup.append((x, y))
+    return spline(coord, dedup)
 
 
 def y_axis() -> dict:
@@ -168,15 +181,16 @@ def main() -> int:
     (out / "data" / ns / "worldgen" / "noise_settings" / f"{name}.json").write_text(
         json.dumps(settings, indent=2), encoding="utf-8")
 
-    (out / "data" / ns / "worldgen" / "dimension_type" / f"{name}.json").write_text(json.dumps({
-        "ultrawarm": False, "natural": True, "coordinate_scale": 1.0,
-        "has_skylight": True, "has_ceiling": False, "ambient_light": 0.0,
-        "piglin_safe": False, "bed_works": True, "respawn_anchor_works": False,
-        "has_raids": True, "logical_height": 384, "min_y": -64, "height": 384,
-        "infiniburn": "#minecraft:infiniburn_overworld",
-        "effects": "minecraft:overworld", "monster_spawn_light_level": 0,
-        "monster_spawn_block_light_limit": 0,
-    }, indent=2), encoding="utf-8")
+    dt_path = CACHE / "dimension_type_overworld.json"
+    if not dt_path.exists():
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        raw = opener.open(urllib.request.Request(
+            "https://raw.githubusercontent.com/misode/mcmeta/1.20.1-data/"
+            "data/minecraft/dimension_type/overworld.json",
+            headers={"User-Agent": "dsh/1.0"}), timeout=30).read()
+        dt_path.write_bytes(raw)
+    (out / "data" / ns / "worldgen" / "dimension_type" / f"{name}.json").write_text(
+        dt_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     (out / "data" / ns / "dimension" / f"{name}.json").write_text(json.dumps({
         "type": f"{ns}:{name}",

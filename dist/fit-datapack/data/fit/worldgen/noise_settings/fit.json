@@ -43,16 +43,10 @@
                   "type": "minecraft:add",
                   "argument1": {
                     "type": "minecraft:add",
-                    "argument1": {
-                      "type": "minecraft:constant",
-                      "value": 119.98673916821049
-                    },
+                    "argument1": 119.98673916821049,
                     "argument2": {
                       "type": "minecraft:mul",
-                      "argument1": {
-                        "type": "minecraft:constant",
-                        "value": 333.6009045766725
-                      },
+                      "argument1": 333.6009045766725,
                       "argument2": {
                         "type": "minecraft:spline",
                         "spline": {
@@ -85,10 +79,7 @@
                   },
                   "argument2": {
                     "type": "minecraft:mul",
-                    "argument1": {
-                      "type": "minecraft:constant",
-                      "value": 90.0
-                    },
+                    "argument1": 90.0,
                     "argument2": {
                       "type": "minecraft:mul",
                       "argument1": {
@@ -152,10 +143,7 @@
                 },
                 "argument2": {
                   "type": "minecraft:mul",
-                  "argument1": {
-                    "type": "minecraft:constant",
-                    "value": 30.817054760601536
-                  },
+                  "argument1": 30.817054760601536,
                   "argument2": {
                     "type": "minecraft:mul",
                     "argument1": {
@@ -224,18 +212,12 @@
               },
               "argument2": {
                 "type": "minecraft:mul",
-                "argument1": {
-                  "type": "minecraft:constant",
-                  "value": 7.157285208046249
-                },
+                "argument1": 7.157285208046249,
                 "argument2": {
                   "type": "minecraft:add",
                   "argument1": {
                     "type": "minecraft:mul",
-                    "argument1": {
-                      "type": "minecraft:constant",
-                      "value": 2.0
-                    },
+                    "argument1": 2.0,
                     "argument2": {
                       "type": "minecraft:spline",
                       "spline": {
@@ -265,19 +247,13 @@
                       }
                     }
                   },
-                  "argument2": {
-                    "type": "minecraft:constant",
-                    "value": -1.0
-                  }
+                  "argument2": -1.0
                 }
               }
             },
             "argument2": {
               "type": "minecraft:mul",
-              "argument1": {
-                "type": "minecraft:constant",
-                "value": 51.89045837525925
-              },
+              "argument1": 51.89045837525925,
               "argument2": {
                 "type": "minecraft:mul",
                 "argument1": {
@@ -301,7 +277,7 @@
                         "derivative": 0.0
                       },
                       {
-                        "location": 1.0,
+                        "location": 0.999,
                         "value": 1.0,
                         "derivative": 0.0
                       },
@@ -346,10 +322,7 @@
           },
           "argument2": {
             "type": "minecraft:mul",
-            "argument1": {
-              "type": "minecraft:constant",
-              "value": -30.0
-            },
+            "argument1": -30.0,
             "argument2": {
               "type": "minecraft:spline",
               "spline": {
@@ -380,10 +353,7 @@
         },
         "argument2": {
           "type": "minecraft:mul",
-          "argument1": {
-            "type": "minecraft:constant",
-            "value": -1.0
-          },
+          "argument1": -1.0,
           "argument2": {
             "type": "minecraft:y_clamped_gradient",
             "from_y": -64,
@@ -424,16 +394,10 @@
                   "type": "minecraft:add",
                   "argument1": {
                     "type": "minecraft:add",
-                    "argument1": {
-                      "type": "minecraft:constant",
-                      "value": 119.98673916821049
-                    },
+                    "argument1": 119.98673916821049,
                     "argument2": {
                       "type": "minecraft:mul",
-                      "argument1": {
-                        "type": "minecraft:constant",
-                        "value": 333.6009045766725
-                      },
+                      "argument1": 333.6009045766725,
                       "argument2": {
                         "type": "minecraft:spline",
                         "spline": {
@@ -466,10 +430,7 @@
                   },
                   "argument2": {
                     "type": "minecraft:mul",
-                    "argument1": {
-                      "type": "minecraft:constant",
-                      "value": 90.0
-                    },
+                    "argument1": 90.0,
                     "argument2": {
                       "type": "minecraft:mul",
                       "argument1": {
@@ -533,10 +494,7 @@
                 },
                 "argument2": {
                   "type": "minecraft:mul",
-                  "argument1": {
-                    "type": "minecraft:constant",
-                    "value": 30.817054760601536
-                  },
+                  "argument1": 30.817054760601536,
                   "argument2": {
                     "type": "minecraft:mul",
                     "argument1": {
@@ -605,18 +563,12 @@
               },
               "argument2": {
                 "type": "minecraft:mul",
-                "argument1": {
-                  "type": "minecraft:constant",
-                  "value": 7.157285208046249
-                },
+                "argument1": 7.157285208046249,
                 "argument2": {
                   "type": "minecraft:add",
                   "argument1": {
                     "type": "minecraft:mul",
-                    "argument1": {
-                      "type": "minecraft:constant",
-                      "value": 2.0
-                    },
+                    "argument1": 2.0,
                     "argument2": {
                       "type": "minecraft:spline",
                       "spline": {
@@ -646,19 +598,13 @@
                       }
                     }
                   },
-                  "argument2": {
-                    "type": "minecraft:constant",
-                    "value": -1.0
-                  }
+                  "argument2": -1.0
                 }
               }
             },
             "argument2": {
               "type": "minecraft:mul",
-              "argument1": {
-                "type": "minecraft:constant",
-                "value": 51.89045837525925
-              },
+              "argument1": 51.89045837525925,
               "argument2": {
                 "type": "minecraft:mul",
                 "argument1": {
@@ -682,7 +628,7 @@
                         "derivative": 0.0
                       },
                       {
-                        "location": 1.0,
+                        "location": 0.999,
                         "value": 1.0,
                         "derivative": 0.0
                       },
@@ -727,10 +673,7 @@
           },
           "argument2": {
             "type": "minecraft:mul",
-            "argument1": {
-              "type": "minecraft:constant",
-              "value": -30.0
-            },
+            "argument1": -30.0,
             "argument2": {
               "type": "minecraft:spline",
               "spline": {
@@ -761,10 +704,7 @@
         },
         "argument2": {
           "type": "minecraft:mul",
-          "argument1": {
-            "type": "minecraft:constant",
-            "value": -1.0
-          },
+          "argument1": -1.0,
           "argument2": {
             "type": "minecraft:y_clamped_gradient",
             "from_y": -64,
