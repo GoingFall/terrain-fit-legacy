@@ -50,7 +50,12 @@
                       "argument2": {
                         "type": "minecraft:spline",
                         "spline": {
-                          "coordinate": "minecraft:overworld/continents",
+                          "coordinate": {
+                            "type": "minecraft:noise",
+                            "noise": "fit:band0",
+                            "xz_scale": 0.91997,
+                            "y_scale": 0.0
+                          },
                           "points": [
                             {
                               "location": -1.0,
@@ -85,7 +90,12 @@
                       "argument1": {
                         "type": "minecraft:spline",
                         "spline": {
-                          "coordinate": "minecraft:overworld/erosion",
+                          "coordinate": {
+                            "type": "minecraft:noise",
+                            "noise": "fit:band1",
+                            "xz_scale": 0.76929,
+                            "y_scale": 0.0
+                          },
                           "points": [
                             {
                               "location": -1.0,
@@ -110,8 +120,8 @@
                         "spline": {
                           "coordinate": {
                             "type": "minecraft:noise",
-                            "noise": "minecraft:vegetation",
-                            "xz_scale": 0.25,
+                            "noise": "fit:band4",
+                            "xz_scale": 1.12059,
                             "y_scale": 0.0
                           },
                           "points": [
@@ -149,21 +159,43 @@
                     "argument1": {
                       "type": "minecraft:spline",
                       "spline": {
-                        "coordinate": "minecraft:overworld/ridges_folded",
+                        "coordinate": {
+                          "type": "minecraft:add",
+                          "argument1": 1.0,
+                          "argument2": {
+                            "type": "minecraft:mul",
+                            "argument1": -1.0,
+                            "argument2": {
+                              "type": "minecraft:abs",
+                              "argument": {
+                                "type": "minecraft:add",
+                                "argument1": {
+                                  "type": "minecraft:mul",
+                                  "argument1": 2.0,
+                                  "argument2": {
+                                    "type": "minecraft:abs",
+                                    "argument": {
+                                      "type": "minecraft:noise",
+                                      "noise": "fit:band2",
+                                      "xz_scale": 1.0337,
+                                      "y_scale": 0.0
+                                    }
+                                  }
+                                },
+                                "argument2": -1.0
+                              }
+                            }
+                          }
+                        },
                         "points": [
                           {
-                            "location": -1.0,
+                            "location": 0.0,
                             "value": 0.0,
                             "derivative": 0.0
                           },
                           {
-                            "location": 0.0,
-                            "value": 0.15,
-                            "derivative": 0.0
-                          },
-                          {
                             "location": 0.5,
-                            "value": 0.07491487110317878,
+                            "value": 0.9250851288968213,
                             "derivative": 0.0
                           },
                           {
@@ -179,8 +211,8 @@
                       "spline": {
                         "coordinate": {
                           "type": "minecraft:noise",
-                          "noise": "minecraft:vegetation",
-                          "xz_scale": 0.25,
+                          "noise": "fit:band4",
+                          "xz_scale": 1.12059,
                           "y_scale": 0.0
                         },
                         "points": [
@@ -223,8 +255,8 @@
                       "spline": {
                         "coordinate": {
                           "type": "minecraft:noise",
-                          "noise": "minecraft:temperature",
-                          "xz_scale": 0.25,
+                          "noise": "fit:band3",
+                          "xz_scale": 0.96681,
                           "y_scale": 0.0
                         },
                         "points": [
@@ -261,8 +293,8 @@
                   "spline": {
                     "coordinate": {
                       "type": "minecraft:noise",
-                      "noise": "minecraft:temperature",
-                      "xz_scale": 0.25,
+                      "noise": "fit:band3",
+                      "xz_scale": 0.96681,
                       "y_scale": 0.0
                     },
                     "points": [
@@ -294,8 +326,8 @@
                   "spline": {
                     "coordinate": {
                       "type": "minecraft:noise",
-                      "noise": "minecraft:temperature",
-                      "xz_scale": 0.25,
+                      "noise": "fit:band3",
+                      "xz_scale": 0.96681,
                       "y_scale": 0.0
                     },
                     "points": [
@@ -328,7 +360,12 @@
               "spline": {
                 "coordinate": {
                   "type": "minecraft:abs",
-                  "argument": "minecraft:overworld/erosion"
+                  "argument": {
+                    "type": "minecraft:noise",
+                    "noise": "fit:band5",
+                    "xz_scale": 1.3051,
+                    "y_scale": 0.0
+                  }
                 },
                 "points": [
                   {
@@ -401,7 +438,12 @@
                       "argument2": {
                         "type": "minecraft:spline",
                         "spline": {
-                          "coordinate": "minecraft:overworld/continents",
+                          "coordinate": {
+                            "type": "minecraft:noise",
+                            "noise": "fit:band0",
+                            "xz_scale": 0.91997,
+                            "y_scale": 0.0
+                          },
                           "points": [
                             {
                               "location": -1.0,
@@ -436,7 +478,12 @@
                       "argument1": {
                         "type": "minecraft:spline",
                         "spline": {
-                          "coordinate": "minecraft:overworld/erosion",
+                          "coordinate": {
+                            "type": "minecraft:noise",
+                            "noise": "fit:band1",
+                            "xz_scale": 0.76929,
+                            "y_scale": 0.0
+                          },
                           "points": [
                             {
                               "location": -1.0,
@@ -461,8 +508,8 @@
                         "spline": {
                           "coordinate": {
                             "type": "minecraft:noise",
-                            "noise": "minecraft:vegetation",
-                            "xz_scale": 0.25,
+                            "noise": "fit:band4",
+                            "xz_scale": 1.12059,
                             "y_scale": 0.0
                           },
                           "points": [
@@ -500,21 +547,43 @@
                     "argument1": {
                       "type": "minecraft:spline",
                       "spline": {
-                        "coordinate": "minecraft:overworld/ridges_folded",
+                        "coordinate": {
+                          "type": "minecraft:add",
+                          "argument1": 1.0,
+                          "argument2": {
+                            "type": "minecraft:mul",
+                            "argument1": -1.0,
+                            "argument2": {
+                              "type": "minecraft:abs",
+                              "argument": {
+                                "type": "minecraft:add",
+                                "argument1": {
+                                  "type": "minecraft:mul",
+                                  "argument1": 2.0,
+                                  "argument2": {
+                                    "type": "minecraft:abs",
+                                    "argument": {
+                                      "type": "minecraft:noise",
+                                      "noise": "fit:band2",
+                                      "xz_scale": 1.0337,
+                                      "y_scale": 0.0
+                                    }
+                                  }
+                                },
+                                "argument2": -1.0
+                              }
+                            }
+                          }
+                        },
                         "points": [
                           {
-                            "location": -1.0,
+                            "location": 0.0,
                             "value": 0.0,
                             "derivative": 0.0
                           },
                           {
-                            "location": 0.0,
-                            "value": 0.15,
-                            "derivative": 0.0
-                          },
-                          {
                             "location": 0.5,
-                            "value": 0.07491487110317878,
+                            "value": 0.9250851288968213,
                             "derivative": 0.0
                           },
                           {
@@ -530,8 +599,8 @@
                       "spline": {
                         "coordinate": {
                           "type": "minecraft:noise",
-                          "noise": "minecraft:vegetation",
-                          "xz_scale": 0.25,
+                          "noise": "fit:band4",
+                          "xz_scale": 1.12059,
                           "y_scale": 0.0
                         },
                         "points": [
@@ -574,8 +643,8 @@
                       "spline": {
                         "coordinate": {
                           "type": "minecraft:noise",
-                          "noise": "minecraft:temperature",
-                          "xz_scale": 0.25,
+                          "noise": "fit:band3",
+                          "xz_scale": 0.96681,
                           "y_scale": 0.0
                         },
                         "points": [
@@ -612,8 +681,8 @@
                   "spline": {
                     "coordinate": {
                       "type": "minecraft:noise",
-                      "noise": "minecraft:temperature",
-                      "xz_scale": 0.25,
+                      "noise": "fit:band3",
+                      "xz_scale": 0.96681,
                       "y_scale": 0.0
                     },
                     "points": [
@@ -645,8 +714,8 @@
                   "spline": {
                     "coordinate": {
                       "type": "minecraft:noise",
-                      "noise": "minecraft:temperature",
-                      "xz_scale": 0.25,
+                      "noise": "fit:band3",
+                      "xz_scale": 0.96681,
                       "y_scale": 0.0
                     },
                     "points": [
@@ -679,7 +748,12 @@
               "spline": {
                 "coordinate": {
                   "type": "minecraft:abs",
-                  "argument": "minecraft:overworld/erosion"
+                  "argument": {
+                    "type": "minecraft:noise",
+                    "noise": "fit:band5",
+                    "xz_scale": 1.3051,
+                    "y_scale": 0.0
+                  }
                 },
                 "points": [
                   {

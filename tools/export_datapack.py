@@ -28,6 +28,25 @@ from model_v2 import Params2  # noqa: E402
 TEMPLATE_URL = ("https://raw.githubusercontent.com/misode/mcmeta/1.20.1-data/"
                 "data/minecraft/worldgen/noise_settings/overworld.json")
 CACHE = Path("_tpl")
+SIZE = 512.0        # the generator's own domain, in blocks: wavelength = SIZE / freq
+NS = "fit"          # set from --namespace in main()
+
+
+def band_noise(freq: float, octaves: int = 1) -> tuple[dict, dict]:
+    """One of our spectral bands -> (noise registry entry, density-function node).
+
+    A vanilla noise entry gives features of 1/2^firstOctave blocks at xz_scale 1, so the octave is
+    chosen from the target wavelength and xz_scale does the fine tuning. This is what makes the
+    export keep the frequencies the fit chose instead of inheriting vanilla's.
+    """
+    import math
+    feature = SIZE / max(freq, 1e-3)                 # blocks per feature
+    octave = -int(round(math.log2(max(feature, 1.0))))
+    scale = feature * (2.0 ** octave)
+    entry = {"firstOctave": octave,
+             "amplitudes": [1.0 / (2 ** i) for i in range(max(1, octaves))]}
+    node = {"type": "minecraft:noise", "noise": None, "xz_scale": round(scale, 5), "y_scale": 0.0}
+    return entry, node
 
 
 # ----------------------------------------------------------------- density helpers
@@ -93,7 +112,7 @@ def y_axis() -> dict:
 
 
 # ----------------------------------------------------------------- model -> DF
-def height_df(p: Params2) -> dict:
+def height_df(p: Params2) -> tuple[dict, dict]:
     """Compose our model out of vanilla's climate fields.
 
     A density-function cannot invent new noise wavelengths without new noise registry entries, so
@@ -101,12 +120,20 @@ def height_df(p: Params2) -> dict:
     temperature). The *shapes* (splines, masks, gating, amplitudes) are ours; the wavelengths are
     vanilla's -- the export is an approximation, documented in the README.
     """
-    CONT = "minecraft:overworld/continents"
-    EROS = "minecraft:overworld/erosion"
-    RIDG = "minecraft:overworld/ridges"
-    FOLD = "minecraft:overworld/ridges_folded"
-    TEMP = noise("minecraft:temperature", scale=0.25)      # raw noise entries, not DF files
-    VEG = noise("minecraft:vegetation", scale=0.25)
+    noises = {}
+
+    def band(freq: float, octaves: int = 1):
+        entry, node = band_noise(freq, octaves)
+        name = f"band{len(noises)}"
+        node["noise"] = f"{NS}:{name}"
+        noises[name] = entry
+        return node
+
+    CONT = band(p.continent_freq, 2)
+    EROS = band(p.massif_freq, 2)
+    RIDG = band(p.ridge_freq, 2)
+    TEMP = band(p.hill_freq, 2)
+    VEG = band(p.mountain_freq, 2)
 
     # continent -> vertical profile (the spline is our hypsometry curve)
     cont = spline(CONT, [(-1.0, 0.0), (-0.1, 0.42), (0.3, 0.62), (1.0, 1.0)])
@@ -119,8 +146,9 @@ def height_df(p: Params2) -> dict:
     massif = spline(EROS, [(-1.0, -1.0), (0.0, 0.0), (1.0, 1.0)])
     h = add(h, mul(const(p.massif_amp), mul(massif, mask)))
 
-    # ridge crests: vanilla already ships the folded ridge field
-    sharp = spline(FOLD, [(-1.0, 0.0), (0.0, 0.15), (0.5, 0.35 ** p.ridge_sharp), (1.0, 1.0)])
+    # ridge crests: fold our own band (1 - |2|n| - 1|) then sharpen with a spline
+    folded = add(1.0, mul(-1.0, absf(add(mul(2.0, absf(RIDG)), -1.0))))
+    sharp = spline(folded, [(0.0, 0.0), (0.5, 1.0 - 0.35 ** p.ridge_sharp), (1.0, 1.0)])
     h = add(h, mul(const(p.ridge_amp), mul(sharp, mask)))
 
     # hills, and spikes gated by the hills (RTG)
@@ -129,15 +157,16 @@ def height_df(p: Params2) -> dict:
     spike = smoothstep_spline(TEMP, p.spike_threshold, 1.0)
     h = add(h, mul(const(p.spike_amp), mul(spike, hill)))
 
-    # river band around the zero contour of erosion
-    band = spline(absf(EROS), [(0.0, 1.0), (p.river_width, 0.0), (1.0, 0.0)])
-    h = add(h, mul(const(-p.river_depth), band))
-    return h
+    # river band around the zero contour
+    river = spline(absf(band(p.river_freq, 1)), [(0.0, 1.0), (p.river_width, 0.0), (1.0, 0.0)])
+    h = add(h, mul(const(-p.river_depth), river))
+    return h, noises
 
 
-def final_density(p: Params2) -> dict:
+def final_density(p: Params2) -> tuple[dict, dict]:
     # density = H(x,z) - y  -> positive below the surface, negative above
-    return clampf(add(height_df(p), mul(const(-1.0), y_axis())), -8.0, 8.0)
+    h, noises = height_df(p)
+    return clampf(add(h, mul(const(-1.0), y_axis())), -8.0, 8.0), noises
 
 
 def main() -> int:
@@ -162,9 +191,12 @@ def main() -> int:
         print(f"cached template -> {tpl_path}")
     tpl = json.loads(tpl_path.read_text(encoding="utf-8"))
 
+    global NS
+    NS = args.namespace
+    fd, band_noises = final_density(p)
     settings = json.loads(json.dumps(tpl))          # deep copy
-    settings["noise_router"]["final_density"] = final_density(p)
-    settings["noise_router"]["initial_density_without_jaggedness"] = final_density(p)
+    settings["noise_router"]["final_density"] = fd
+    settings["noise_router"]["initial_density_without_jaggedness"] = fd
     settings["sea_level"] = int(round(best["metrics"]["cover"]["water_pct"] * 0 + p.sea_level))
 
     out = Path(args.out)
@@ -172,6 +204,11 @@ def main() -> int:
     (out / "data" / ns / "worldgen" / "noise_settings").mkdir(parents=True, exist_ok=True)
     (out / "data" / ns / "dimension_type").mkdir(parents=True, exist_ok=True)
     (out / "data" / ns / "dimension").mkdir(parents=True, exist_ok=True)
+
+    noise_dir = out / "data" / ns / "worldgen" / "noise"
+    noise_dir.mkdir(parents=True, exist_ok=True)
+    for band_name, entry in band_noises.items():
+        (noise_dir / f"{band_name}.json").write_text(json.dumps(entry, indent=2), encoding="utf-8")
 
     (out / "pack.mcmeta").write_text(json.dumps({
         "pack": {"pack_format": 15,
