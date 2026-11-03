@@ -170,7 +170,7 @@ def main() -> int:
     out = Path(args.out)
     ns, name = args.namespace, args.name
     (out / "data" / ns / "worldgen" / "noise_settings").mkdir(parents=True, exist_ok=True)
-    (out / "data" / ns / "worldgen" / "dimension_type").mkdir(parents=True, exist_ok=True)
+    (out / "data" / ns / "dimension_type").mkdir(parents=True, exist_ok=True)
     (out / "data" / ns / "dimension").mkdir(parents=True, exist_ok=True)
 
     (out / "pack.mcmeta").write_text(json.dumps({
@@ -189,7 +189,7 @@ def main() -> int:
             "data/minecraft/dimension_type/overworld.json",
             headers={"User-Agent": "dsh/1.0"}), timeout=30).read()
         dt_path.write_bytes(raw)
-    (out / "data" / ns / "worldgen" / "dimension_type" / f"{name}.json").write_text(
+    (out / "data" / ns / "dimension_type" / f"{name}.json").write_text(
         dt_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     (out / "data" / ns / "dimension" / f"{name}.json").write_text(json.dumps({
