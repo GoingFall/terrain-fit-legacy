@@ -147,6 +147,38 @@ preview/      small reference images (viewers themselves are gitignored, rebuild
 Python 3.11+ with `numpy` and `Pillow`. Nothing else. Multi-process region decoding uses the
 standard library; large maps scale with CPU cores (`--workers N`).
 
+## First result: a fitted generator that ships as a datapack
+
+`tools/export_datapack.py` turns a fitted parameter set into a 1.20.1 datapack with its own
+dimension, so the generated terrain can be walked in and measured:
+
+```bash
+python tools/fit_metrics.py --model v2 --target metrics.json --random 50 --refine 3 --best best.json
+python tools/export_datapack.py --params best.json --out dist/fit-datapack
+# copy dist/fit-datapack (or the zip) into <world>/datapacks/, /reload, then:
+#   /execute in fit:fit run tp @s 0 140 0
+python tools/terrain_metrics.py "<that world>"        # measure what the game actually generated
+```
+
+Fitted against the reference region (`r.0.0` of the map used during development), distance 0.089:
+
+| metric | target | fit |
+|---|---|---|
+| relief span | 238 | 193 |
+| slope p50/p90/p99 | 0.71/1.50/2.50 | 0.71/1.39/2.57 |
+| water / snow | 0.59% / 63.9% | 0.55% / 61.4% |
+| ridge per km2 | 278 | 278 |
+| spectral bands >=512 / 256-512 / 128-256 / 64-128 | 24.2 / 35.9 / 37.7 / 1.7 % | 23.8 / 34.1 / 39.8 / 1.6 % |
+
+What the datapack cannot express: the **directional valley axis** (a density function has no rotated
+frame) and custom noise wavelengths — the export maps the bands onto vanilla's own climate fields
+(`continents`, `erosion`, `ridges_folded`, `temperature`, `vegetation`), so it reproduces the shapes
+and amplitudes of the model but not its exact frequencies. Treat the export as the pipeline proof,
+not as a byte-identical clone of the preview.
+
+Verified so far: JSON structure, node-type and reference validity against the 1.20.1 vanilla data.
+Not verified: an actual in-game load (needs a Minecraft client).
+
 ## Roadmap
 
 1. **A generator model that can represent the target, then fit it.** A random search over the

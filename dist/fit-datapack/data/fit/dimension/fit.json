@@ -1,0 +1,11 @@
+{
+  "type": "fit:fit",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "fit:fit",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "preset": "minecraft:overworld"
+    }
+  }
+}
