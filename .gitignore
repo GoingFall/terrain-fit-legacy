@@ -19,3 +19,7 @@ crops/
 annotated/
 gallery/
 input/
+
+# fetched vanilla template (cached by tools/export_datapack.py)
+_tpl.json
+_tpl/
