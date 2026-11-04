@@ -121,11 +121,52 @@ def height(x: float, z: float) -> float:
     return h
 
 
+DEFAULTS = {
+    "seed": 1337, "baseLevel": 110.0, "reliefMacro": 180.0, "continentFreq": 1.9,
+    "continentGamma": 1.7, "massifFreq": 4.0, "massifAmp": 40.0, "mountainFreq": 2.3,
+    "mountainThreshold": 0.20, "mountainSoftness": 0.30, "ridgeFreq": 8.5, "ridgeAmp": 55.0,
+    "ridgeSharp": 1.5, "hillFreq": 11.0, "hillAmp": 16.0, "spikeFreq": 21.0, "spikeAmp": 26.0,
+    "spikeThreshold": 0.45, "erosionFreq": 3.2, "erosionFloor": 0.30, "riverFreq": 2.6,
+    "riverDepth": 16.0, "riverWidth": 0.09, "seaLevel": 74, "snowLine": 193.0,
+    "snowQuantile": 0.40,
+}
+
+
+def load_config(path: str | None) -> dict:
+    """Read the mod's config JSON (config/terrainfit.json), falling back to defaults."""
+    if not path:
+        return dict(DEFAULTS)
+    import json
+    f = Path(path)
+    if not f.exists():
+        return dict(DEFAULTS)
+    data = json.loads(f.read_text(encoding="utf-8"))
+    return {**DEFAULTS, **{k: v for k, v in data.items() if k in DEFAULTS}}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--size", type=int, default=64)
+    ap.add_argument("--config", help="read parameters from this JSON (same file the mod uses)")
+    ap.add_argument("--write-config", help="write a default config to this path")
     ap.add_argument("--dump")
     args = ap.parse_args()
+
+    if args.write_config:
+        import json
+        Path(args.write_config).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.write_config).write_text(json.dumps(DEFAULTS, indent=2), encoding="utf-8")
+        print(f"-> {args.write_config}")
+        return 0
+
+    if args.config:
+        cfg = load_config(args.config)
+        g = globals()
+        for k, v in cfg.items():
+            g[k.upper().replace("MACRO", "_MACRO")] = v
+        g["BASE_LEVEL"] = cfg["baseLevel"]
+        g["RELIEF_MACRO"] = cfg["reliefMacro"]
+
     lines = []
     for z in range(args.size):
         for x in range(args.size):

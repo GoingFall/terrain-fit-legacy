@@ -1,16 +1,16 @@
-Mod verified: 99.3% of generated columns match the model within one block
+Runtime parameters: a fitting iteration no longer needs a rebuild
 
-The suspected peak truncation was a measurement artefact, not a fill bug:
+The mod now reads config/terrainfit.json at startup (FitParams), and tools/fit_model.py can write
+and read the same file, so the Python preview and the in-game generator stay on one parameter set.
 
-- comparing every generated column against FitTerrain.height(): mean diff +0.65 blocks,
-  37% exact, 99.3% within one block
-- the columns that differ by ~+5 are vanilla structures (the server log has villagers suffocating
-  inside a village), not terrain
+- FitParams: 26 parameters, loaded from the config dir, written back with defaults if absent
+- HeightmapChunkGenerator reads sea level and snow line from the same file
+- tools/fit_loop_mod.py: write config -> boot Forge server -> forceload a window -> measure ->
+  distance, all in one command, with --set and --search
 
-Also found a probe bug that had been quietly shrinking every experiment: /forceload add takes BLOCK
-coordinates, so the "512-block area" was actually a couple of chunks around the origin. Fixed in
-server_probe (block extents now).
+Verified: changing reliefMacro from 180 to 300 with no rebuild moved the generated terrain from
+relief 112 to 161 (and the log shows "[terrain-fit] loaded params from ...").
 
-With a real 512-block window at (-1024,-1024) the mod generates: relief 112, slope p50 0.71 and
-p90 1.50 (both exactly the reference), snow 11.7%, flat 22%. The remaining gap to the reference's
-relief of 238 is the model's own amplitude, not the fill.
+First real search (reliefMacro 250..500, four points, 5m23s total): best distance 0.636 against the
+reference region, with slope p50/p90 exactly 0.71/1.58 at every point -- the remaining gap is in
+relief (204 vs 238) and snow cover (37.6% vs 63.9%), both directly searchable now.
