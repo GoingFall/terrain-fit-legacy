@@ -65,17 +65,22 @@
                                 "points": [
                                   {
                                     "location": -1.0,
-                                    "value": 0.0,
+                                    "value": 0.45,
                                     "derivative": 0.0
                                   },
                                   {
-                                    "location": -0.1,
-                                    "value": 0.42,
+                                    "location": -0.4,
+                                    "value": 0.68,
                                     "derivative": 0.0
                                   },
                                   {
-                                    "location": 0.3,
-                                    "value": 0.62,
+                                    "location": 0.0,
+                                    "value": 0.82,
+                                    "derivative": 0.0
+                                  },
+                                  {
+                                    "location": 0.5,
+                                    "value": 0.92,
                                     "derivative": 0.0
                                   },
                                   {
@@ -394,9 +399,9 @@
                   }
                 }
               },
-              "argument2": 1.4757835994982076
+              "argument2": 2.1532752754819997
             },
-            "argument2": -335.50140971486917
+            "argument2": -732.7934668091814
           },
           "min": 39.0,
           "max": 277.0
@@ -466,17 +471,22 @@
                                 "points": [
                                   {
                                     "location": -1.0,
-                                    "value": 0.0,
+                                    "value": 0.45,
                                     "derivative": 0.0
                                   },
                                   {
-                                    "location": -0.1,
-                                    "value": 0.42,
+                                    "location": -0.4,
+                                    "value": 0.68,
                                     "derivative": 0.0
                                   },
                                   {
-                                    "location": 0.3,
-                                    "value": 0.62,
+                                    "location": 0.0,
+                                    "value": 0.82,
+                                    "derivative": 0.0
+                                  },
+                                  {
+                                    "location": 0.5,
+                                    "value": 0.92,
                                     "derivative": 0.0
                                   },
                                   {
@@ -795,9 +805,9 @@
                   }
                 }
               },
-              "argument2": 1.4757835994982076
+              "argument2": 2.1532752754819997
             },
-            "argument2": -335.50140971486917
+            "argument2": -732.7934668091814
           },
           "min": 39.0,
           "max": 277.0
@@ -978,7 +988,7 @@
         "then_run": {
           "type": "minecraft:block",
           "result_state": {
-            "Name": "minecraft:snow_block"
+            "Name": "minecraft:snow"
           }
         }
       },

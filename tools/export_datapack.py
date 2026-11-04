@@ -138,7 +138,7 @@ def height_df(p: Params2) -> tuple[dict, dict]:
     VEG = band(p.mountain_freq, 2)
 
     # continent -> vertical profile (the spline is our hypsometry curve)
-    cont = spline(CONT, [(-1.0, 0.0), (-0.1, 0.42), (0.3, 0.62), (1.0, 1.0)])
+    cont = spline(CONT, [(-1.0, 0.45), (-0.4, 0.68), (0.0, 0.82), (0.5, 0.92), (1.0, 1.0)])
     h = add(const(p.base_level), mul(const(p.relief_macro), cont))
 
     # mountain mask from vegetation, gating the big relief
@@ -246,7 +246,7 @@ def main() -> int:
                             "anchor": {"absolute": int(round(snow_line))},
                             "surface_depth_multiplier": 2},
                 "then_run": {"type": "minecraft:block",
-                             "result_state": {"Name": "minecraft:snow_block"}},
+                             "result_state": {"Name": "minecraft:snow"}},
             })
             print(f"   snow surface rule: y > {int(round(snow_line))} -> snow_block")
 
