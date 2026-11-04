@@ -36,6 +36,13 @@ RIVER_FREQ = 2.6
 RIVER_DEPTH = 16.0
 RIVER_WIDTH = 0.09
 SEA_LEVEL = 74
+VALLEY_ANGLE = 146.0
+VALLEY_DEPTH = 0.0
+VALLEY_WIDTH = 0.10
+VALLEY_MEANDER = 0.06
+VALLEY_MEANDER_FREQ = 2.0
+SNOW_MASK_FREQ = 2.0
+SNOW_MASK_THRESHOLD = 0.30
 
 M32 = 0xFFFFFFFF
 
@@ -118,7 +125,19 @@ def height(x: float, z: float) -> float:
     rv = noise2(x, z, RIVER_FREQ / 512.0, SEED + 77, 2)
     river = 1.0 - _smooth(abs(rv) / RIVER_WIDTH)
     h -= river * RIVER_DEPTH
+
+    if VALLEY_DEPTH != 0.0:
+        a = math.radians(VALLEY_ANGLE)
+        uu = x * math.cos(a) + z * math.sin(a)
+        vv = -x * math.sin(a) + z * math.cos(a)
+        meander = VALLEY_MEANDER * noise2(uu, 0.0, VALLEY_MEANDER_FREQ / 512.0, SEED + 88, 2)
+        band = 1.0 - _smooth(abs(vv - meander) / VALLEY_WIDTH)
+        h -= band * VALLEY_DEPTH
     return h
+
+
+def snow_mask(x: float, z: float) -> float:
+    return noise2(x, z, SNOW_MASK_FREQ / 512.0, SEED + 99, 2)
 
 
 DEFAULTS = {
@@ -127,7 +146,9 @@ DEFAULTS = {
     "mountainThreshold": 0.20, "mountainSoftness": 0.30, "ridgeFreq": 8.5, "ridgeAmp": 55.0,
     "ridgeSharp": 1.5, "hillFreq": 11.0, "hillAmp": 16.0, "spikeFreq": 21.0, "spikeAmp": 26.0,
     "spikeThreshold": 0.45, "erosionFreq": 3.2, "erosionFloor": 0.30, "riverFreq": 2.6,
-    "riverDepth": 16.0, "riverWidth": 0.09, "seaLevel": 74, "snowLine": 193.0,
+    "riverDepth": 16.0, "riverWidth": 0.09, "valleyAngle": 146.0, "valleyDepth": 0.0,
+    "valleyWidth": 0.10, "valleyMeander": 0.06, "valleyMeanderFreq": 2.0,
+    "snowMaskFreq": 2.0, "snowMaskThreshold": 0.30, "seaLevel": 74, "snowLine": 193.0,
     "snowQuantile": 0.40,
 }
 
@@ -166,6 +187,13 @@ def main() -> int:
             g[k.upper().replace("MACRO", "_MACRO")] = v
         g["BASE_LEVEL"] = cfg["baseLevel"]
         g["RELIEF_MACRO"] = cfg["reliefMacro"]
+        g["VALLEY_ANGLE"] = cfg["valleyAngle"]
+        g["VALLEY_DEPTH"] = cfg["valleyDepth"]
+        g["VALLEY_WIDTH"] = cfg["valleyWidth"]
+        g["VALLEY_MEANDER"] = cfg["valleyMeander"]
+        g["VALLEY_MEANDER_FREQ"] = cfg["valleyMeanderFreq"]
+        g["SNOW_MASK_FREQ"] = cfg["snowMaskFreq"]
+        g["SNOW_MASK_THRESHOLD"] = cfg["snowMaskThreshold"]
 
     lines = []
     for z in range(args.size):

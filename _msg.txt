@@ -1,16 +1,16 @@
-Two metric bugs that invalidated the snow tuning
+Mod: directional valley and snow mask, both driven by the runtime config
 
-1. cover.*_pct divided by the whole grid instead of the valid columns. A mod world with 25600 valid
-   columns out of a 1024x1024 grid reported 37% snow where it actually had 95%.
+- valleyAngle / valleyDepth / valleyWidth / valleyMeander: rotate into (u, v) and carve a wandering
+  band; the Python mirror has the same code. Verified: turning it on drops the local minimum from
+  123 to 110 blocks while leaving the mean height alone (a carved band, not a global shift).
+- snowMaskFreq / snowMaskThreshold: a low-frequency noise decides which regions read as snowy,
+  independent of altitude, because the reference's 63.9% snow cannot come from its own hypsometry
+  (~10% of its area is above y=193; the snow is biome-driven).
+- both are in FitParams and tools/fit_model.py, so a config edit changes them without a rebuild.
 
-2. snow cover counted only "a snow layer above the ground" (s_raw > g_raw). A generated world paints
-   snow as the surface block, so the two sides were measuring different things. The surface block is
-   now included.
+First run with both: distance 0.646, anisotropy 320 (target 85.6 -- the valley term can exceed the
+target, so it is tunable in the right direction), snow 97.5% (threshold too permissive).
 
-With both fixed: reference snow 63.9%, mod 95.3% at snowLine 170 and 97% at 175 -- i.e. altitude is
-not what drives the reference's snow at all. Its own hypsometry puts only ~10% of the area above
-y=193, so the 63.9% must come from the snowy_plains biome's surface rule across ~50% of the map.
-Matching it needs a snow *mask* (low-frequency noise), not a height threshold.
-
-Also from this round: the mod loop runs one iteration in ~80 s (config write, server boot, forceload,
-measure) and currently reaches distance 0.62-0.65 against r.0.0.
+Residual breakdown at 0.676 shows what is left: water 0% vs 0.59 (the sea level sits below the
+terrain), spectrum 128-256 at 5.3% vs 37.7% (the model has no mid-scale band), gt4 0.83% vs 0.14%
+(too many small cliffs), ridge density 957 vs 278 (crests too close together), anisotropy 320 vs 86.
