@@ -188,13 +188,13 @@ def main() -> int:
     prepare(Path(args.pack), args.mode == "generate", args.biome)
     commands = None
     if args.mode == "generate":
-        n = max(1, args.area // 16 // 2)
+        n = max(16, args.area // 2)          # half extent in BLOCKS
         dim = args.dimension
         commands = [
-            f"execute in {dim} run forceload add {-n} {-n} -1 -1",
-            f"execute in {dim} run forceload add {-n} 0 -1 {n - 1}",
-            f"execute in {dim} run forceload add 0 {-n} {n - 1} -1",
-            f"execute in {dim} run forceload add 0 0 {n - 1} {n - 1}",
+            f"execute in {dim} run forceload add {-n} {-n} {-n // 2} {-1}",
+            f"execute in {dim} run forceload add {-n // 2} {-n} {-1} {-1}",
+            f"execute in {dim} run forceload add {-n} {-n // 2} {-n // 2} {-1}",
+            f"execute in {dim} run forceload add {-n // 2} {-n // 2} {-1} {-1}",
         ]
 
     code, log = run(args.timeout, commands, args.dimension)

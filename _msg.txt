@@ -1,0 +1,16 @@
+Mod verified: 99.3% of generated columns match the model within one block
+
+The suspected peak truncation was a measurement artefact, not a fill bug:
+
+- comparing every generated column against FitTerrain.height(): mean diff +0.65 blocks,
+  37% exact, 99.3% within one block
+- the columns that differ by ~+5 are vanilla structures (the server log has villagers suffocating
+  inside a village), not terrain
+
+Also found a probe bug that had been quietly shrinking every experiment: /forceload add takes BLOCK
+coordinates, so the "512-block area" was actually a couple of chunks around the origin. Fixed in
+server_probe (block extents now).
+
+With a real 512-block window at (-1024,-1024) the mod generates: relief 112, slope p50 0.71 and
+p90 1.50 (both exactly the reference), snow 11.7%, flat 22%. The remaining gap to the reference's
+relief of 238 is the model's own amplitude, not the fill.
