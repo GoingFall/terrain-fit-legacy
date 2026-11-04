@@ -1,12 +1,24 @@
-Offline harness: validate and generate with a headless vanilla server
+Perf: a full fitting iteration is now ~43 s instead of minutes
 
-Every recent failure was a JSON schema guess validated by launching the client. This replaces that
-loop: tools/server_probe.py runs a real 1.20.1 server with the pack installed, reports the exact
-codec error (the same DataFixerUpper messages the client shows), and in generate mode forceloads a
-fixed 512-block area so terrain_metrics.py can measure what the game actually produced.
+Generation was pathological because the density function had no wrappers: the game evaluated the
+whole 128 KB noise graph per block. Vanilla wraps its own terrain in exactly these nodes:
 
-- accepts the pack, optionally overrides minecraft:overworld with our noise settings so the
-  generated overworld can be measured
-- stops the server itself; skips truncated region files left behind by an interrupt
-- first real run: PACK PARSED, 6 region files generated, measured relief 221, flat 13.3%,
-  snow 8.4% (target 238 / 13.5% / 63.9%)
+  interpolated( blend_density( add( cache_2d(height), -y ) ) )
+
+  * cache_2d    -- the height term is 2D, so it is computed once per column
+  * interpolated -- sample the 4x4x4 cell grid and interpolate
+
+Measured with the headless server (256-block area, 64 chunks):
+
+  export      ~2 s
+  server boot 16.0 s   (JVM + registry, unavoidable per launch)
+  generation  ~21 s    (~0.3 s/chunk;  earlier: >7 min, never finished)
+  shutdown     1.1 s
+  measure     ~4 s
+  total       43 s
+
+Other fixes:
+- the probe blocked on readline when the server went quiet, so its stop condition never ran
+- the run directory is reused, so libraries are not re-unpacked every time
+- validate mode returns right after "Done (" instead of waiting for spawn chunks: 19 s
+- fit_loop runs a single server call (a bad pack fails at boot) and defaults to a 128-block area

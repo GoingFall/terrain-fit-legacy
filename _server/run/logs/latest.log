@@ -1,55 +1,50 @@
-[11:03:43] [ServerMain/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
-[11:03:43] [ServerMain/INFO]: Found new data pack file/probe, loading it automatically
-[11:03:44] [ServerMain/INFO]: Loaded 7 recipes
-[11:03:45] [ServerMain/INFO]: Loaded 1271 advancements
-[11:03:45] [Server thread/INFO]: Starting minecraft server version 1.20.1
-[11:03:45] [Server thread/INFO]: Loading properties
-[11:03:45] [Server thread/INFO]: Default game type: SURVIVAL
-[11:03:45] [Server thread/INFO]: Generating keypair
-[11:03:45] [Server thread/INFO]: Starting Minecraft server on *:25565
-[11:03:45] [Server thread/INFO]: Using default channel type
-[11:03:45] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
-[11:03:45] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
-[11:03:45] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
-[11:03:45] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
-[11:03:45] [Server thread/INFO]: Preparing level "world"
-[11:03:48] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
-[11:03:49] [Worker-Main-25/INFO]: Preparing spawn area: 0%
-[11:03:49] [Worker-Main-25/INFO]: Preparing spawn area: 0%
-[11:03:49] [Worker-Main-12/INFO]: Preparing spawn area: 0%
-[11:03:50] [Worker-Main-22/INFO]: Preparing spawn area: 0%
-[11:03:50] [Worker-Main-25/INFO]: Preparing spawn area: 2%
-[11:03:51] [Worker-Main-3/INFO]: Preparing spawn area: 2%
-[11:03:51] [Worker-Main-24/INFO]: Preparing spawn area: 4%
-[11:03:52] [Worker-Main-26/INFO]: Preparing spawn area: 6%
-[11:03:52] [Worker-Main-14/INFO]: Preparing spawn area: 9%
-[11:03:53] [Worker-Main-13/INFO]: Preparing spawn area: 12%
-[11:03:53] [Worker-Main-23/INFO]: Preparing spawn area: 17%
-[11:03:54] [Worker-Main-16/INFO]: Preparing spawn area: 18%
-[11:03:54] [Worker-Main-17/INFO]: Preparing spawn area: 21%
-[11:03:55] [Worker-Main-8/INFO]: Preparing spawn area: 24%
-[11:03:55] [Worker-Main-13/INFO]: Preparing spawn area: 29%
-[11:03:56] [Worker-Main-15/INFO]: Preparing spawn area: 34%
-[11:03:56] [Worker-Main-11/INFO]: Preparing spawn area: 34%
-[11:03:57] [Worker-Main-23/INFO]: Preparing spawn area: 38%
-[11:03:57] [Worker-Main-24/INFO]: Preparing spawn area: 43%
-[11:03:58] [Worker-Main-7/INFO]: Preparing spawn area: 47%
-[11:03:58] [Worker-Main-2/INFO]: Preparing spawn area: 49%
-[11:03:59] [Worker-Main-24/INFO]: Preparing spawn area: 54%
-[11:03:59] [Worker-Main-22/INFO]: Preparing spawn area: 57%
-[11:04:00] [Worker-Main-21/INFO]: Preparing spawn area: 63%
-[11:04:00] [Worker-Main-1/INFO]: Preparing spawn area: 68%
-[11:04:01] [Worker-Main-6/INFO]: Preparing spawn area: 72%
-[11:04:01] [Worker-Main-13/INFO]: Preparing spawn area: 76%
-[11:04:02] [Worker-Main-30/INFO]: Preparing spawn area: 82%
-[11:04:02] [Worker-Main-13/INFO]: Preparing spawn area: 85%
-[11:04:03] [Worker-Main-20/INFO]: Preparing spawn area: 88%
-[11:04:03] [Worker-Main-4/INFO]: Preparing spawn area: 92%
-[11:04:04] [Server thread/INFO]: Time elapsed: 15458 ms
-[11:04:04] [Server thread/INFO]: Done (18.179s)! For help, type "help"
-[11:04:04] [Server thread/INFO]: Marked chunk [-1, -1] in minecraft:overworld to be force loaded
-[11:04:04] [Server thread/INFO]: Marked chunk [-1, 0] in minecraft:overworld to be force loaded
-[11:04:04] [Server thread/INFO]: Marked chunk [0, -1] in minecraft:overworld to be force loaded
-[11:04:04] [Server thread/INFO]: Marked chunk [0, 0] in minecraft:overworld to be force loaded
-[11:04:13] [Server thread/INFO]: Villager byb['Villager'/60, l='ServerLevel[world]', x=214.28, y=191.56, z=129.37] died, message: 'Villager suffocated in a wall'
-[11:04:13] [Server thread/INFO]: Villager byb['Villager'/75, l='ServerLevel[world]', x=227.72, y=191.00, z=129.63] died, message: 'Villager suffocated in a wall'
+[15:10:38] [ServerMain/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[15:10:38] [ServerMain/INFO]: Found new data pack file/probe, loading it automatically
+[15:10:39] [ServerMain/INFO]: Loaded 7 recipes
+[15:10:39] [ServerMain/INFO]: Loaded 1271 advancements
+[15:10:39] [Server thread/INFO]: Starting minecraft server version 1.20.1
+[15:10:39] [Server thread/INFO]: Loading properties
+[15:10:39] [Server thread/INFO]: Default game type: SURVIVAL
+[15:10:39] [Server thread/INFO]: Generating keypair
+[15:10:40] [Server thread/INFO]: Starting Minecraft server on *:25565
+[15:10:40] [Server thread/INFO]: Using default channel type
+[15:10:40] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[15:10:40] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[15:10:40] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[15:10:40] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[15:10:40] [Server thread/INFO]: Preparing level "world"
+[15:10:42] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[15:10:42] [Worker-Main-9/INFO]: Preparing spawn area: 0%
+[15:10:42] [Worker-Main-29/INFO]: Preparing spawn area: 0%
+[15:10:43] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:10:43] [Worker-Main-8/INFO]: Preparing spawn area: 3%
+[15:10:44] [Worker-Main-1/INFO]: Preparing spawn area: 7%
+[15:10:44] [Worker-Main-24/INFO]: Preparing spawn area: 9%
+[15:10:45] [Worker-Main-4/INFO]: Preparing spawn area: 18%
+[15:10:45] [Worker-Main-28/INFO]: Preparing spawn area: 24%
+[15:10:46] [Worker-Main-10/INFO]: Preparing spawn area: 32%
+[15:10:46] [Worker-Main-6/INFO]: Preparing spawn area: 42%
+[15:10:47] [Worker-Main-10/INFO]: Preparing spawn area: 51%
+[15:10:47] [Worker-Main-9/INFO]: Preparing spawn area: 59%
+[15:10:48] [Worker-Main-28/INFO]: Preparing spawn area: 69%
+[15:10:48] [Worker-Main-10/INFO]: Preparing spawn area: 82%
+[15:10:49] [Worker-Main-7/INFO]: Preparing spawn area: 88%
+[15:10:49] [Server thread/INFO]: Time elapsed: 7309 ms
+[15:10:49] [Server thread/INFO]: Done (9.225s)! For help, type "help"
+[15:10:49] [Server thread/INFO]: Marked chunk [-1, -1] in minecraft:overworld to be force loaded
+[15:10:49] [Server thread/INFO]: Marked chunk [-1, 0] in minecraft:overworld to be force loaded
+[15:10:49] [Server thread/INFO]: Marked chunk [0, -1] in minecraft:overworld to be force loaded
+[15:10:49] [Server thread/INFO]: Marked chunk [0, 0] in minecraft:overworld to be force loaded
+[15:11:10] [Server thread/INFO]: Stopping the server
+[15:11:10] [Server thread/INFO]: Stopping server
+[15:11:10] [Server thread/INFO]: Saving players
+[15:11:10] [Server thread/INFO]: Saving worlds
+[15:11:10] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[15:11:11] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[15:11:11] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/fit:fit
+[15:11:11] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[15:11:11] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[15:11:11] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[15:11:11] [Server thread/INFO]: ThreadedAnvilChunkStorage (fit): All chunks are saved
+[15:11:11] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[15:11:11] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved

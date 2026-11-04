@@ -107,6 +107,15 @@ def smoothstep_spline(coord, lo: float, hi: float, lo_v: float = 0.0, hi_v: floa
     return spline(coord, dedup)
 
 
+def cache2d(df: dict) -> dict:
+    return {"type": "minecraft:cache_2d", "argument": df}
+
+
+def with_wrappers(df: dict) -> dict:
+    return {"type": "minecraft:interpolated",
+            "argument": {"type": "minecraft:blend_density", "argument": df}}
+
+
 def y_axis() -> dict:
     """A density function that returns the block y (so `H - y` becomes a density)."""
     return {"type": "minecraft:y_clamped_gradient",
@@ -166,9 +175,18 @@ def height_df(p: Params2) -> tuple[dict, dict]:
 
 
 def final_density(p: Params2) -> tuple[dict, dict]:
-    # density = H(x,z) - y  -> positive below the surface, negative above
+    """density = (H(x,z) - y), wrapped the way vanilla wraps its own terrain.
+
+    The wrappers are not cosmetic:
+      * cache_2d  -- H depends on (x, z) only, so it is cached per column instead of recomputed for
+                     every block in the column (this alone was minutes of generation time)
+      * interpolated -- sample the field on the 4x4x4 cell grid and interpolate, instead of
+                     evaluating the whole noise graph per block
+      * blend_density -- smooths chunk borders on new chunks
+    """
     h, noises = height_df(p)
-    return clampf(add(h, mul(const(-1.0), y_axis())), -8.0, 8.0), noises
+    body = add(cache2d(h), mul(const(-1.0), y_axis()))
+    return with_wrappers(body), noises
 
 
 def biome_source(spec: str) -> dict:
@@ -253,8 +271,8 @@ def main() -> int:
         hdf, _ = height_df(p)
         scaled = add(mul(hdf, a), b)
         bounded = clampf(scaled, lo_t, hi_t)
-        settings["noise_router"]["final_density"] = clampf(
-            add(bounded, mul(const(-1.0), y_axis())), -8.0, 8.0)
+        settings["noise_router"]["final_density"] = with_wrappers(
+            add(cache2d(bounded), mul(const(-1.0), y_axis())))
         settings["noise_router"]["initial_density_without_jaggedness"] = settings["noise_router"]["final_density"]
 
         h2 = df_eval.solve_heights(settings["noise_router"]["final_density"], ctx,
