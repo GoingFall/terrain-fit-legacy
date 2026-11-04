@@ -4,8 +4,63 @@
     "type": "minecraft:noise",
     "settings": "fit:fit",
     "biome_source": {
-      "type": "minecraft:fixed",
-      "biome": "minecraft:stony_peaks"
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "minecraft:snowy_plains",
+          "parameters": {
+            "temperature": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 0.0
+            },
+            "humidity": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "continentalness": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "erosion": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "weirdness": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "minecraft:plains",
+          "parameters": {
+            "temperature": {
+              "min_inclusive": 0.0,
+              "max_inclusive": 1.0
+            },
+            "humidity": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "continentalness": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "erosion": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "weirdness": {
+              "min_inclusive": -1.0,
+              "max_inclusive": 1.0
+            },
+            "depth": 0,
+            "offset": 0
+          }
+        }
+      ]
     }
   }
 }

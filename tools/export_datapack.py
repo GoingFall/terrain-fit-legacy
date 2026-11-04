@@ -171,6 +171,31 @@ def final_density(p: Params2) -> tuple[dict, dict]:
     return clampf(add(h, mul(const(-1.0), y_axis())), -8.0, 8.0), noises
 
 
+def biome_source(spec: str) -> dict:
+    """One biome -> minecraft:fixed; several -> minecraft:multi_noise with explicit parameters.
+
+    multi_noise picks by climate, so a list is split across the temperature axis (cold to warm),
+    which is the closest a datapack gets to "snow at altitude" without touching the height field.
+    """
+    names = [b.strip() for b in spec.split(",") if b.strip()]
+    if len(names) == 1:
+        return {"type": "minecraft:fixed", "biome": names[0]}
+    full = {"min_inclusive": -1.0, "max_inclusive": 1.0}
+    step = 2.0 / len(names)
+    out = []
+    for i, name in enumerate(names):
+        lo = -1.0 + i * step
+        out.append({
+            "biome": name,
+            "parameters": {
+                "temperature": {"min_inclusive": round(lo, 4), "max_inclusive": round(lo + step, 4)},
+                "humidity": full, "continentalness": full, "erosion": full,
+                "weirdness": full, "depth": 0, "offset": 0,
+            },
+        })
+    return {"type": "minecraft:multi_noise", "biomes": out}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--params", required=True, help="best_*.json from fit_metrics")
@@ -178,8 +203,9 @@ def main() -> int:
     ap.add_argument("--out", default="dist/fit-datapack")
     ap.add_argument("--name", default="fit")
     ap.add_argument("--target", help="metrics JSON: match its relief range and snow line")
-    ap.add_argument("--biome", default="minecraft:stony_peaks",
-                    help="fixed biome for the test dimension (a single mountain biome)")
+    ap.add_argument("--biome", default="minecraft:snowy_plains",
+                    help="one biome (fixed source) or a comma-separated list (multi_noise, "
+                         "split by temperature)")
     ap.add_argument("--window", type=int, default=512,
                     help="measurement window in blocks, matched to the reference region")
     ap.add_argument("--offset", type=float, default=0.0,
@@ -311,7 +337,7 @@ def main() -> int:
         "generator": {
             "type": "minecraft:noise",
             "settings": f"{ns}:{name}",
-            "biome_source": {"type": "minecraft:fixed", "biome": args.biome},
+            "biome_source": biome_source(args.biome),
         },
     }, indent=2), encoding="utf-8")
 
@@ -332,7 +358,7 @@ def main() -> int:
     print(f"-> {out}")
     print(f"   dimension: {ns}:{name}")
     print(f"   install:   copy the folder into <world>/datapacks/ and /reload")
-    print(f"   biome:     {args.biome} (uniform)")
+    print(f"   biome:     {args.biome} ({'fixed' if ',' not in args.biome else 'multi_noise by temperature'})")
     print(f"   window:    {args.window} blocks, same size as the reference region")
     print(f"   enter:     /execute in {ns}:{name} run tp @s 0 200 0")
     print("   dropped (not expressible in density functions): directional valley axis")
