@@ -4,8 +4,8 @@
     "type": "minecraft:noise",
     "settings": "fit:fit",
     "biome_source": {
-      "type": "minecraft:multi_noise",
-      "preset": "fit:fit"
+      "type": "minecraft:fixed",
+      "biome": "minecraft:snowy_plains"
     }
   }
 }

@@ -322,7 +322,7 @@ def main() -> int:
                 "weirdness": full, "depth": 0, "offset": 0}})
         plist = out / "data" / ns / "worldgen" / "multi_noise_biome_source_parameter_list"
         plist.mkdir(parents=True, exist_ok=True)
-        (plist / "fit.json").write_text(json.dumps({"preset": entries}, indent=2), encoding="utf-8")
+        (plist / "fit.json").write_text(json.dumps({"biomes": entries}, indent=2), encoding="utf-8")
         print(f"   biome preset: {ns}:fit ({len(entries)} biomes)")
 
     noise_dir = out / "data" / ns / "worldgen" / "noise"

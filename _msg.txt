@@ -1,11 +1,12 @@
-Multi-biome dimensions need a preset in 1.20.1, not an inline list
+Biome wiring: default to a fixed biome, fix the parameter-list key
 
-Log said: No key preset in MapLike[{type: multi_noise, biomes: [...]}]. The inline biome list form
-is not accepted by the 1.20.1 codec, so a multi-biome dimension needs a
-data/<ns>/worldgen/multi_noise_biome_source_parameter_list/<name>.json registry entry, referenced
-as {"type":"minecraft:multi_noise","preset":"<ns>:<name>"}.
+Two load failures in a row came from the multi-biome path:
+  - inline {"biomes": [...]} inside the dimension -> "No key preset"
+  - {"preset": [list]} in the parameter-list registry -> "Not a string: [...]"
+The registry entry holds either {"preset": "<id>"} or {"biomes": [...]}; a list wrapped in "preset"
+was the second failure. Fixed the key, but the default is now a single minecraft:fixed biome again
+(snowy_plains, the reference's dominant biome and the one whose surface rule actually places snow)
+so the next launch is not another experiment.
 
-- the exporter emits that parameter list when more than one biome is requested, and keeps a
-  minecraft:fixed source for a single biome
-- fixed a clobbered loop variable that renamed the dimension file after the last biome
-- rebuild as dist/terrain-fit-1.1.0.zip (snowy_plains / plains split by temperature)
+Multi-biome stays available via --biome a,b once it has been verified in game.
+Rebuild as dist/terrain-fit-1.1.1.zip.
