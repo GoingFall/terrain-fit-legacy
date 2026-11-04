@@ -1,12 +1,18 @@
-Fit to the height field instead of to summary statistics
+Skeleton model: placed landforms instead of stationary noise
 
-tools/fit_heightfield.py: vectorised model (numpy), coordinate descent on the L2 difference between
-the generated heights and the reference heights. One evaluation of a 512x512 window is ~0.1 s, so a
-round of 27 parameters costs seconds instead of a server run.
+tools/skeleton_model.py replaces the noise sum with a handful of oriented gaussian massifs (plus
+valley polylines), seeded at the reference's own peaks and refined by coordinate descent against the
+reference height field.
 
-Result on r.0.0: rmse 53.1 -> 38.1 blocks over 10 rounds, correlation 0.64 with the reference field.
+    noise model      rmse 38.1 blocks   correlation 0.64
+    skeleton model   rmse  9.1 blocks   correlation 0.98
 
-But the side-by-side (preview/hf_compare.png) shows why the picture still does not look alike: the
-reference is a few large smooth slopes with terraced contours, while any fit of the current model
-produces isotropic blobs crossed by river-like veins. The model has no notion of *where* a landform
-is, so it cannot place the reference's massif -- no amount of parameter search fixes that.
+preview/skeleton_compare.png shows why: the massifs reproduce the reference's large slopes and the
+valley between them, which the noise model could never place.
+
+preview/skeleton_quantised.png answers the terracing question: quantising the smooth skeleton to
+whole blocks reproduces the reference's contour-like 1-block steps, so the author's fine terraces are
+not a missing feature but a consequence of quantising a smooth slope.
+
+Next: port the massif list into the mod's config (it is a sum of gaussians, trivial in Java) and
+check the in-game result with the existing loop.
