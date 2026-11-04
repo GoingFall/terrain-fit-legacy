@@ -1,0 +1,57 @@
+{
+  "dimension": "fit:fit",
+  "biome": "minecraft:stony_peaks",
+  "window": {
+    "size": 512,
+    "x": [
+      -256,
+      256
+    ],
+    "z": [
+      -256,
+      256
+    ]
+  },
+  "target": "preview/m_r00.json",
+  "offset": 39.0,
+  "params": {
+    "size": 512,
+    "seed": 7,
+    "base_level": 119.98673916821049,
+    "relief_macro": 333.6009045766725,
+    "continent_freq": 2.1739814224857135,
+    "continent_gamma": 1.8844031344385344,
+    "mountain_freq": 1.7847750997273242,
+    "mountain_threshold": 0.5,
+    "mountain_softness": 0.40435288891311216,
+    "massif_freq": 2.599789803078257,
+    "massif_amp": 90.0,
+    "ridge_freq": 3.869586284229189,
+    "ridge_amp": 30.817054760601536,
+    "ridge_octaves": 2,
+    "ridge_sharp": 2.4684208892056367,
+    "hill_freq": 16.549327374299786,
+    "hill_amp": 7.157285208046249,
+    "spike_freq": 15.984194688846367,
+    "spike_amp": 51.89045837525925,
+    "spike_threshold": 0.7016007151708366,
+    "erosion_freq": 1.5527095723705433,
+    "erosion_floor": 0.3955149386334016,
+    "valley_angle_deg": 109.5,
+    "valley_depth": 60.0,
+    "valley_width": 0.1875,
+    "valley_meander": 0.05,
+    "valley_meander_freq": 2.0,
+    "river_freq": 1.5324496443359543,
+    "river_depth": 30.0,
+    "river_width": 0.2,
+    "sea_level": 63.91109083917046,
+    "water_quantile": 0.006910167887247548,
+    "snow_quantile": 0.3858877601387359,
+    "yaw_deg": 0.0,
+    "pitch_deg": -10.0,
+    "eye_height": 24.0
+  },
+  "measure": "python tools/terrain_metrics.py \"<world>/dimensions/fit/fit\" --region r.-1.-1 --json ingame.json",
+  "teleport": "/execute in fit:fit run tp @s 0 200 0"
+}

@@ -4,8 +4,8 @@
     "type": "minecraft:noise",
     "settings": "fit:fit",
     "biome_source": {
-      "type": "minecraft:multi_noise",
-      "preset": "minecraft:overworld"
+      "type": "minecraft:fixed",
+      "biome": "minecraft:stony_peaks"
     }
   }
 }

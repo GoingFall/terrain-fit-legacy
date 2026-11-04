@@ -178,6 +178,10 @@ def main() -> int:
     ap.add_argument("--out", default="dist/fit-datapack")
     ap.add_argument("--name", default="fit")
     ap.add_argument("--target", help="metrics JSON: match its relief range and snow line")
+    ap.add_argument("--biome", default="minecraft:stony_peaks",
+                    help="fixed biome for the test dimension (a single mountain biome)")
+    ap.add_argument("--window", type=int, default=512,
+                    help="measurement window in blocks, matched to the reference region")
     ap.add_argument("--offset", type=float, default=0.0,
                     help="blocks to add after normalisation (calibrate from an in-game measurement)")
     args = ap.parse_args()
@@ -307,14 +311,30 @@ def main() -> int:
         "generator": {
             "type": "minecraft:noise",
             "settings": f"{ns}:{name}",
-            "biome_source": {"type": "minecraft:multi_noise", "preset": "minecraft:overworld"},
+            "biome_source": {"type": "minecraft:fixed", "biome": args.biome},
         },
     }, indent=2), encoding="utf-8")
+
+    half = args.window // 2
+    manifest = {
+        "dimension": f"{ns}:{name}",
+        "biome": args.biome,
+        "window": {"size": args.window, "x": [-half, half], "z": [-half, half]},
+        "target": args.target,
+        "offset": args.offset,
+        "params": {k: v for k, v in vars(p).items() if not k.startswith("_")},
+        "measure": f"python tools/terrain_metrics.py \"<world>/dimensions/{ns}/{name}\" "
+                   f"--region r.-1.-1 --json ingame.json",
+        "teleport": f"/execute in {ns}:{name} run tp @s 0 200 0",
+    }
+    (out / "fit-manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
     print(f"-> {out}")
     print(f"   dimension: {ns}:{name}")
     print(f"   install:   copy the folder into <world>/datapacks/ and /reload")
-    print(f"   enter:     /execute in {ns}:{name} run tp @s 0 140 0")
+    print(f"   biome:     {args.biome} (uniform)")
+    print(f"   window:    {args.window} blocks, same size as the reference region")
+    print(f"   enter:     /execute in {ns}:{name} run tp @s 0 200 0")
     print("   dropped (not expressible in density functions): directional valley axis")
     return 0
 
