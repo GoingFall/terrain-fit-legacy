@@ -1,16 +1,12 @@
-Mod: directional valley and snow mask, both driven by the runtime config
+Fit to the height field instead of to summary statistics
 
-- valleyAngle / valleyDepth / valleyWidth / valleyMeander: rotate into (u, v) and carve a wandering
-  band; the Python mirror has the same code. Verified: turning it on drops the local minimum from
-  123 to 110 blocks while leaving the mean height alone (a carved band, not a global shift).
-- snowMaskFreq / snowMaskThreshold: a low-frequency noise decides which regions read as snowy,
-  independent of altitude, because the reference's 63.9% snow cannot come from its own hypsometry
-  (~10% of its area is above y=193; the snow is biome-driven).
-- both are in FitParams and tools/fit_model.py, so a config edit changes them without a rebuild.
+tools/fit_heightfield.py: vectorised model (numpy), coordinate descent on the L2 difference between
+the generated heights and the reference heights. One evaluation of a 512x512 window is ~0.1 s, so a
+round of 27 parameters costs seconds instead of a server run.
 
-First run with both: distance 0.646, anisotropy 320 (target 85.6 -- the valley term can exceed the
-target, so it is tunable in the right direction), snow 97.5% (threshold too permissive).
+Result on r.0.0: rmse 53.1 -> 38.1 blocks over 10 rounds, correlation 0.64 with the reference field.
 
-Residual breakdown at 0.676 shows what is left: water 0% vs 0.59 (the sea level sits below the
-terrain), spectrum 128-256 at 5.3% vs 37.7% (the model has no mid-scale band), gt4 0.83% vs 0.14%
-(too many small cliffs), ridge density 957 vs 278 (crests too close together), anisotropy 320 vs 86.
+But the side-by-side (preview/hf_compare.png) shows why the picture still does not look alike: the
+reference is a few large smooth slopes with terraced contours, while any fit of the current model
+produces isotropic blobs crossed by river-like veins. The model has no notion of *where* a landform
+is, so it cannot place the reference's massif -- no amount of parameter search fixes that.
