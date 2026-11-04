@@ -170,6 +170,19 @@ Fitted against the reference region (`r.0.0` of the map used during development)
 | ridge per km2 | 278 | 278 |
 | spectral bands >=512 / 256-512 / 128-256 / 64-128 | 24.2 / 35.9 / 37.7 / 1.7 % | 23.8 / 34.1 / 39.8 / 1.6 % |
 
+### Checking the export without launching the game
+
+`tools/df_eval.py` evaluates the exported density function itself: the surface is where the density
+crosses zero, and every wrapper the router adds (squeeze, min with the cave noise) is monotonic and
+zero-preserving, so the height field can be solved offline and compared with the target.
+
+```bash
+python tools/df_eval.py --datapack dist/fit-datapack --target metrics.json
+```
+
+That turned three game-length iterations into seconds, and caught: terrain clipped at y=320, an
+absolute height range that put the whole world above sea level, and a missing snow surface rule.
+
 What the datapack cannot express: the **directional valley axis** (a density function has no rotated
 frame) and custom noise wavelengths — the export maps the bands onto vanilla's own climate fields
 (`continents`, `erosion`, `ridges_folded`, `temperature`, `vegetation`), so it reproduces the shapes

@@ -20,6 +20,8 @@ import argparse
 import json
 import sys
 import urllib.request
+
+import numpy as np
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -175,6 +177,7 @@ def main() -> int:
     ap.add_argument("--namespace", default="fit")
     ap.add_argument("--out", default="dist/fit-datapack")
     ap.add_argument("--name", default="fit")
+    ap.add_argument("--target", help="metrics JSON: match its relief range and snow line")
     args = ap.parse_args()
 
     best = json.loads(Path(args.params).read_text(encoding="utf-8"))
@@ -197,7 +200,50 @@ def main() -> int:
     settings = json.loads(json.dumps(tpl))          # deep copy
     settings["noise_router"]["final_density"] = fd
     settings["noise_router"]["initial_density_without_jaggedness"] = fd
-    settings["sea_level"] = int(round(best["metrics"]["cover"]["water_pct"] * 0 + p.sea_level))
+    settings["aquifers_enabled"] = False        # aquifers punch holes into a custom height field
+
+    # --- normalise the height field and set the snow line, decided offline (no game needed)
+    if args.target:
+        import df_eval
+        tgt = json.loads(Path(args.target).read_text(encoding="utf-8"))
+        lo_t, hi_t = tgt["relief"]["min"], tgt["relief"]["max"]
+        np_x = np_z = 512
+        xs = (np.arange(np_x) + 0.5)
+        zs = (np.arange(np_z) + 0.5)
+        noise_registry = {f"{args.namespace}:{k}": v for k, v in band_noises.items()}
+        ctx = df_eval.Ctx(noise_registry, xs, zs, np_x)
+        hdf0, _ = height_df(p)
+        h = np.asarray(df_eval.ev(hdf0, np.zeros((np_x, np_z)), ctx), dtype=np.float64)
+        a = (hi_t - lo_t) / max(float(h.max() - h.min()), 1e-3)
+        b = lo_t - a * float(h.min())
+        print(f"   height normalisation: raw {h.min():.0f}..{h.max():.0f} -> "
+              f"{lo_t:.0f}..{hi_t:.0f}  (x{a:.3f} +{b:.1f})")
+        hdf, _ = height_df(p)
+        scaled = add(mul(hdf, a), b)
+        settings["noise_router"]["final_density"] = clampf(
+            add(scaled, mul(const(-1.0), y_axis())), -8.0, 8.0)
+        settings["noise_router"]["initial_density_without_jaggedness"] = settings["noise_router"]["final_density"]
+
+        h2 = df_eval.solve_heights(settings["noise_router"]["final_density"], ctx,
+                                   lo=-64.0, hi=320.0, iters=40)
+        wq = max(tgt["cover"]["water_pct"] / 100.0, 0.0)
+        sea = float(np.quantile(h2, min(wq, 0.5)))
+        settings["sea_level"] = int(round(sea))
+        print(f"   sea level {settings['sea_level']} (target water {tgt['cover']['water_pct']:.2f}%)"
+              f"  range {h2.min():.0f}..{h2.max():.0f}")
+
+        # snow above the fitted snow line, before vanilla's biome surface rules
+        snow_line = tgt.get("snow_line") or (lo_t + 0.6 * (hi_t - lo_t))
+        rule = settings["surface_rule"]
+        seq = rule.get("sequence") if isinstance(rule, dict) else None
+        if seq is not None:
+            seq.insert(0, {
+                "type": "minecraft:condition",
+                "if_true": {"type": "minecraft:y_above", "threshold": int(round(snow_line)),
+                            "add_stone_depth": False},
+                "then_run": {"type": "minecraft:block", "result": "minecraft:snow_block"},
+            })
+            print(f"   snow surface rule: y > {int(round(snow_line))} -> snow_block")
 
     out = Path(args.out)
     ns, name = args.namespace, args.name

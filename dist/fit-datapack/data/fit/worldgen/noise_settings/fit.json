@@ -1,5 +1,5 @@
 {
-  "aquifers_enabled": true,
+  "aquifers_enabled": false,
   "default_block": {
     "Name": "minecraft:stone"
   },
@@ -34,7 +34,7 @@
         "argument1": {
           "type": "minecraft:add",
           "argument1": {
-            "type": "minecraft:add",
+            "type": "minecraft:mul",
             "argument1": {
               "type": "minecraft:add",
               "argument1": {
@@ -43,159 +43,278 @@
                   "type": "minecraft:add",
                   "argument1": {
                     "type": "minecraft:add",
-                    "argument1": 119.98673916821049,
+                    "argument1": {
+                      "type": "minecraft:add",
+                      "argument1": {
+                        "type": "minecraft:add",
+                        "argument1": 119.98673916821049,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": 333.6009045766725,
+                          "argument2": {
+                            "type": "minecraft:spline",
+                            "spline": {
+                              "coordinate": {
+                                "type": "minecraft:noise",
+                                "noise": "fit:band0",
+                                "xz_scale": 0.91997,
+                                "y_scale": 0.0
+                              },
+                              "points": [
+                                {
+                                  "location": -1.0,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": -0.1,
+                                  "value": 0.42,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.3,
+                                  "value": 0.62,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 1.0,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "argument2": {
+                        "type": "minecraft:mul",
+                        "argument1": 90.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": {
+                            "type": "minecraft:spline",
+                            "spline": {
+                              "coordinate": {
+                                "type": "minecraft:noise",
+                                "noise": "fit:band1",
+                                "xz_scale": 0.76929,
+                                "y_scale": 0.0
+                              },
+                              "points": [
+                                {
+                                  "location": -1.0,
+                                  "value": -1.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.0,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 1.0,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                }
+                              ]
+                            }
+                          },
+                          "argument2": {
+                            "type": "minecraft:spline",
+                            "spline": {
+                              "coordinate": {
+                                "type": "minecraft:noise",
+                                "noise": "fit:band4",
+                                "xz_scale": 1.12059,
+                                "y_scale": 0.0
+                              },
+                              "points": [
+                                {
+                                  "location": -1.0,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.5,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.9043528889131122,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 1.0,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
                     "argument2": {
                       "type": "minecraft:mul",
-                      "argument1": 333.6009045766725,
+                      "argument1": 30.817054760601536,
                       "argument2": {
-                        "type": "minecraft:spline",
-                        "spline": {
-                          "coordinate": {
-                            "type": "minecraft:noise",
-                            "noise": "fit:band0",
-                            "xz_scale": 0.91997,
-                            "y_scale": 0.0
-                          },
-                          "points": [
-                            {
-                              "location": -1.0,
-                              "value": 0.0,
-                              "derivative": 0.0
+                        "type": "minecraft:mul",
+                        "argument1": {
+                          "type": "minecraft:spline",
+                          "spline": {
+                            "coordinate": {
+                              "type": "minecraft:add",
+                              "argument1": 1.0,
+                              "argument2": {
+                                "type": "minecraft:mul",
+                                "argument1": -1.0,
+                                "argument2": {
+                                  "type": "minecraft:abs",
+                                  "argument": {
+                                    "type": "minecraft:add",
+                                    "argument1": {
+                                      "type": "minecraft:mul",
+                                      "argument1": 2.0,
+                                      "argument2": {
+                                        "type": "minecraft:abs",
+                                        "argument": {
+                                          "type": "minecraft:noise",
+                                          "noise": "fit:band2",
+                                          "xz_scale": 1.0337,
+                                          "y_scale": 0.0
+                                        }
+                                      }
+                                    },
+                                    "argument2": -1.0
+                                  }
+                                }
+                              }
                             },
-                            {
-                              "location": -0.1,
-                              "value": 0.42,
-                              "derivative": 0.0
+                            "points": [
+                              {
+                                "location": 0.0,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.5,
+                                "value": 0.9250851288968213,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 1.0,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              }
+                            ]
+                          }
+                        },
+                        "argument2": {
+                          "type": "minecraft:spline",
+                          "spline": {
+                            "coordinate": {
+                              "type": "minecraft:noise",
+                              "noise": "fit:band4",
+                              "xz_scale": 1.12059,
+                              "y_scale": 0.0
                             },
-                            {
-                              "location": 0.3,
-                              "value": 0.62,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 1.0,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            }
-                          ]
+                            "points": [
+                              {
+                                "location": -1.0,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.5,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.9043528889131122,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 1.0,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              }
+                            ]
+                          }
                         }
                       }
                     }
                   },
                   "argument2": {
                     "type": "minecraft:mul",
-                    "argument1": 90.0,
+                    "argument1": 7.157285208046249,
                     "argument2": {
-                      "type": "minecraft:mul",
+                      "type": "minecraft:add",
                       "argument1": {
-                        "type": "minecraft:spline",
-                        "spline": {
-                          "coordinate": {
-                            "type": "minecraft:noise",
-                            "noise": "fit:band1",
-                            "xz_scale": 0.76929,
-                            "y_scale": 0.0
-                          },
-                          "points": [
-                            {
-                              "location": -1.0,
-                              "value": -1.0,
-                              "derivative": 0.0
+                        "type": "minecraft:mul",
+                        "argument1": 2.0,
+                        "argument2": {
+                          "type": "minecraft:spline",
+                          "spline": {
+                            "coordinate": {
+                              "type": "minecraft:noise",
+                              "noise": "fit:band3",
+                              "xz_scale": 0.96681,
+                              "y_scale": 0.0
                             },
-                            {
-                              "location": 0.0,
-                              "value": 0.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 1.0,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            }
-                          ]
+                            "points": [
+                              {
+                                "location": -1.0,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.0,
+                                "value": 0.5,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 1.0,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              }
+                            ]
+                          }
                         }
                       },
-                      "argument2": {
-                        "type": "minecraft:spline",
-                        "spline": {
-                          "coordinate": {
-                            "type": "minecraft:noise",
-                            "noise": "fit:band4",
-                            "xz_scale": 1.12059,
-                            "y_scale": 0.0
-                          },
-                          "points": [
-                            {
-                              "location": -1.0,
-                              "value": 0.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 0.5,
-                              "value": 0.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 0.9043528889131122,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 1.0,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            }
-                          ]
-                        }
-                      }
+                      "argument2": -1.0
                     }
                   }
                 },
                 "argument2": {
                   "type": "minecraft:mul",
-                  "argument1": 30.817054760601536,
+                  "argument1": 51.89045837525925,
                   "argument2": {
                     "type": "minecraft:mul",
                     "argument1": {
                       "type": "minecraft:spline",
                       "spline": {
                         "coordinate": {
-                          "type": "minecraft:add",
-                          "argument1": 1.0,
-                          "argument2": {
-                            "type": "minecraft:mul",
-                            "argument1": -1.0,
-                            "argument2": {
-                              "type": "minecraft:abs",
-                              "argument": {
-                                "type": "minecraft:add",
-                                "argument1": {
-                                  "type": "minecraft:mul",
-                                  "argument1": 2.0,
-                                  "argument2": {
-                                    "type": "minecraft:abs",
-                                    "argument": {
-                                      "type": "minecraft:noise",
-                                      "noise": "fit:band2",
-                                      "xz_scale": 1.0337,
-                                      "y_scale": 0.0
-                                    }
-                                  }
-                                },
-                                "argument2": -1.0
-                              }
-                            }
-                          }
+                          "type": "minecraft:noise",
+                          "noise": "fit:band3",
+                          "xz_scale": 0.96681,
+                          "y_scale": 0.0
                         },
                         "points": [
                           {
-                            "location": 0.0,
+                            "location": -1.0,
                             "value": 0.0,
                             "derivative": 0.0
                           },
                           {
-                            "location": 0.5,
-                            "value": 0.9250851288968213,
+                            "location": 0.7016007151708366,
+                            "value": 0.0,
+                            "derivative": 0.0
+                          },
+                          {
+                            "location": 0.999,
+                            "value": 1.0,
                             "derivative": 0.0
                           },
                           {
@@ -206,50 +325,6 @@
                         ]
                       }
                     },
-                    "argument2": {
-                      "type": "minecraft:spline",
-                      "spline": {
-                        "coordinate": {
-                          "type": "minecraft:noise",
-                          "noise": "fit:band4",
-                          "xz_scale": 1.12059,
-                          "y_scale": 0.0
-                        },
-                        "points": [
-                          {
-                            "location": -1.0,
-                            "value": 0.0,
-                            "derivative": 0.0
-                          },
-                          {
-                            "location": 0.5,
-                            "value": 0.0,
-                            "derivative": 0.0
-                          },
-                          {
-                            "location": 0.9043528889131122,
-                            "value": 1.0,
-                            "derivative": 0.0
-                          },
-                          {
-                            "location": 1.0,
-                            "value": 1.0,
-                            "derivative": 0.0
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              },
-              "argument2": {
-                "type": "minecraft:mul",
-                "argument1": 7.157285208046249,
-                "argument2": {
-                  "type": "minecraft:add",
-                  "argument1": {
-                    "type": "minecraft:mul",
-                    "argument1": 2.0,
                     "argument2": {
                       "type": "minecraft:spline",
                       "spline": {
@@ -278,115 +353,48 @@
                         ]
                       }
                     }
-                  },
-                  "argument2": -1.0
+                  }
                 }
-              }
-            },
-            "argument2": {
-              "type": "minecraft:mul",
-              "argument1": 51.89045837525925,
+              },
               "argument2": {
                 "type": "minecraft:mul",
-                "argument1": {
-                  "type": "minecraft:spline",
-                  "spline": {
-                    "coordinate": {
-                      "type": "minecraft:noise",
-                      "noise": "fit:band3",
-                      "xz_scale": 0.96681,
-                      "y_scale": 0.0
-                    },
-                    "points": [
-                      {
-                        "location": -1.0,
-                        "value": 0.0,
-                        "derivative": 0.0
-                      },
-                      {
-                        "location": 0.7016007151708366,
-                        "value": 0.0,
-                        "derivative": 0.0
-                      },
-                      {
-                        "location": 0.999,
-                        "value": 1.0,
-                        "derivative": 0.0
-                      },
-                      {
-                        "location": 1.0,
-                        "value": 1.0,
-                        "derivative": 0.0
-                      }
-                    ]
-                  }
-                },
+                "argument1": -30.0,
                 "argument2": {
                   "type": "minecraft:spline",
                   "spline": {
                     "coordinate": {
-                      "type": "minecraft:noise",
-                      "noise": "fit:band3",
-                      "xz_scale": 0.96681,
-                      "y_scale": 0.0
+                      "type": "minecraft:abs",
+                      "argument": {
+                        "type": "minecraft:noise",
+                        "noise": "fit:band5",
+                        "xz_scale": 1.3051,
+                        "y_scale": 0.0
+                      }
                     },
                     "points": [
                       {
-                        "location": -1.0,
+                        "location": 0.0,
+                        "value": 1.0,
+                        "derivative": 0.0
+                      },
+                      {
+                        "location": 0.2,
                         "value": 0.0,
                         "derivative": 0.0
                       },
                       {
-                        "location": 0.0,
-                        "value": 0.5,
-                        "derivative": 0.0
-                      },
-                      {
                         "location": 1.0,
-                        "value": 1.0,
+                        "value": 0.0,
                         "derivative": 0.0
                       }
                     ]
                   }
                 }
               }
-            }
+            },
+            "argument2": 1.3145292183111086
           },
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": -30.0,
-            "argument2": {
-              "type": "minecraft:spline",
-              "spline": {
-                "coordinate": {
-                  "type": "minecraft:abs",
-                  "argument": {
-                    "type": "minecraft:noise",
-                    "noise": "fit:band5",
-                    "xz_scale": 1.3051,
-                    "y_scale": 0.0
-                  }
-                },
-                "points": [
-                  {
-                    "location": 0.0,
-                    "value": 1.0,
-                    "derivative": 0.0
-                  },
-                  {
-                    "location": 0.2,
-                    "value": 0.0,
-                    "derivative": 0.0
-                  },
-                  {
-                    "location": 1.0,
-                    "value": 0.0,
-                    "derivative": 0.0
-                  }
-                ]
-              }
-            }
-          }
+          "argument2": -204.8651340749343
         },
         "argument2": {
           "type": "minecraft:mul",
@@ -422,7 +430,7 @@
         "argument1": {
           "type": "minecraft:add",
           "argument1": {
-            "type": "minecraft:add",
+            "type": "minecraft:mul",
             "argument1": {
               "type": "minecraft:add",
               "argument1": {
@@ -431,159 +439,278 @@
                   "type": "minecraft:add",
                   "argument1": {
                     "type": "minecraft:add",
-                    "argument1": 119.98673916821049,
+                    "argument1": {
+                      "type": "minecraft:add",
+                      "argument1": {
+                        "type": "minecraft:add",
+                        "argument1": 119.98673916821049,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": 333.6009045766725,
+                          "argument2": {
+                            "type": "minecraft:spline",
+                            "spline": {
+                              "coordinate": {
+                                "type": "minecraft:noise",
+                                "noise": "fit:band0",
+                                "xz_scale": 0.91997,
+                                "y_scale": 0.0
+                              },
+                              "points": [
+                                {
+                                  "location": -1.0,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": -0.1,
+                                  "value": 0.42,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.3,
+                                  "value": 0.62,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 1.0,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "argument2": {
+                        "type": "minecraft:mul",
+                        "argument1": 90.0,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": {
+                            "type": "minecraft:spline",
+                            "spline": {
+                              "coordinate": {
+                                "type": "minecraft:noise",
+                                "noise": "fit:band1",
+                                "xz_scale": 0.76929,
+                                "y_scale": 0.0
+                              },
+                              "points": [
+                                {
+                                  "location": -1.0,
+                                  "value": -1.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.0,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 1.0,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                }
+                              ]
+                            }
+                          },
+                          "argument2": {
+                            "type": "minecraft:spline",
+                            "spline": {
+                              "coordinate": {
+                                "type": "minecraft:noise",
+                                "noise": "fit:band4",
+                                "xz_scale": 1.12059,
+                                "y_scale": 0.0
+                              },
+                              "points": [
+                                {
+                                  "location": -1.0,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.5,
+                                  "value": 0.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 0.9043528889131122,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                },
+                                {
+                                  "location": 1.0,
+                                  "value": 1.0,
+                                  "derivative": 0.0
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
                     "argument2": {
                       "type": "minecraft:mul",
-                      "argument1": 333.6009045766725,
+                      "argument1": 30.817054760601536,
                       "argument2": {
-                        "type": "minecraft:spline",
-                        "spline": {
-                          "coordinate": {
-                            "type": "minecraft:noise",
-                            "noise": "fit:band0",
-                            "xz_scale": 0.91997,
-                            "y_scale": 0.0
-                          },
-                          "points": [
-                            {
-                              "location": -1.0,
-                              "value": 0.0,
-                              "derivative": 0.0
+                        "type": "minecraft:mul",
+                        "argument1": {
+                          "type": "minecraft:spline",
+                          "spline": {
+                            "coordinate": {
+                              "type": "minecraft:add",
+                              "argument1": 1.0,
+                              "argument2": {
+                                "type": "minecraft:mul",
+                                "argument1": -1.0,
+                                "argument2": {
+                                  "type": "minecraft:abs",
+                                  "argument": {
+                                    "type": "minecraft:add",
+                                    "argument1": {
+                                      "type": "minecraft:mul",
+                                      "argument1": 2.0,
+                                      "argument2": {
+                                        "type": "minecraft:abs",
+                                        "argument": {
+                                          "type": "minecraft:noise",
+                                          "noise": "fit:band2",
+                                          "xz_scale": 1.0337,
+                                          "y_scale": 0.0
+                                        }
+                                      }
+                                    },
+                                    "argument2": -1.0
+                                  }
+                                }
+                              }
                             },
-                            {
-                              "location": -0.1,
-                              "value": 0.42,
-                              "derivative": 0.0
+                            "points": [
+                              {
+                                "location": 0.0,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.5,
+                                "value": 0.9250851288968213,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 1.0,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              }
+                            ]
+                          }
+                        },
+                        "argument2": {
+                          "type": "minecraft:spline",
+                          "spline": {
+                            "coordinate": {
+                              "type": "minecraft:noise",
+                              "noise": "fit:band4",
+                              "xz_scale": 1.12059,
+                              "y_scale": 0.0
                             },
-                            {
-                              "location": 0.3,
-                              "value": 0.62,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 1.0,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            }
-                          ]
+                            "points": [
+                              {
+                                "location": -1.0,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.5,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.9043528889131122,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 1.0,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              }
+                            ]
+                          }
                         }
                       }
                     }
                   },
                   "argument2": {
                     "type": "minecraft:mul",
-                    "argument1": 90.0,
+                    "argument1": 7.157285208046249,
                     "argument2": {
-                      "type": "minecraft:mul",
+                      "type": "minecraft:add",
                       "argument1": {
-                        "type": "minecraft:spline",
-                        "spline": {
-                          "coordinate": {
-                            "type": "minecraft:noise",
-                            "noise": "fit:band1",
-                            "xz_scale": 0.76929,
-                            "y_scale": 0.0
-                          },
-                          "points": [
-                            {
-                              "location": -1.0,
-                              "value": -1.0,
-                              "derivative": 0.0
+                        "type": "minecraft:mul",
+                        "argument1": 2.0,
+                        "argument2": {
+                          "type": "minecraft:spline",
+                          "spline": {
+                            "coordinate": {
+                              "type": "minecraft:noise",
+                              "noise": "fit:band3",
+                              "xz_scale": 0.96681,
+                              "y_scale": 0.0
                             },
-                            {
-                              "location": 0.0,
-                              "value": 0.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 1.0,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            }
-                          ]
+                            "points": [
+                              {
+                                "location": -1.0,
+                                "value": 0.0,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 0.0,
+                                "value": 0.5,
+                                "derivative": 0.0
+                              },
+                              {
+                                "location": 1.0,
+                                "value": 1.0,
+                                "derivative": 0.0
+                              }
+                            ]
+                          }
                         }
                       },
-                      "argument2": {
-                        "type": "minecraft:spline",
-                        "spline": {
-                          "coordinate": {
-                            "type": "minecraft:noise",
-                            "noise": "fit:band4",
-                            "xz_scale": 1.12059,
-                            "y_scale": 0.0
-                          },
-                          "points": [
-                            {
-                              "location": -1.0,
-                              "value": 0.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 0.5,
-                              "value": 0.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 0.9043528889131122,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            },
-                            {
-                              "location": 1.0,
-                              "value": 1.0,
-                              "derivative": 0.0
-                            }
-                          ]
-                        }
-                      }
+                      "argument2": -1.0
                     }
                   }
                 },
                 "argument2": {
                   "type": "minecraft:mul",
-                  "argument1": 30.817054760601536,
+                  "argument1": 51.89045837525925,
                   "argument2": {
                     "type": "minecraft:mul",
                     "argument1": {
                       "type": "minecraft:spline",
                       "spline": {
                         "coordinate": {
-                          "type": "minecraft:add",
-                          "argument1": 1.0,
-                          "argument2": {
-                            "type": "minecraft:mul",
-                            "argument1": -1.0,
-                            "argument2": {
-                              "type": "minecraft:abs",
-                              "argument": {
-                                "type": "minecraft:add",
-                                "argument1": {
-                                  "type": "minecraft:mul",
-                                  "argument1": 2.0,
-                                  "argument2": {
-                                    "type": "minecraft:abs",
-                                    "argument": {
-                                      "type": "minecraft:noise",
-                                      "noise": "fit:band2",
-                                      "xz_scale": 1.0337,
-                                      "y_scale": 0.0
-                                    }
-                                  }
-                                },
-                                "argument2": -1.0
-                              }
-                            }
-                          }
+                          "type": "minecraft:noise",
+                          "noise": "fit:band3",
+                          "xz_scale": 0.96681,
+                          "y_scale": 0.0
                         },
                         "points": [
                           {
-                            "location": 0.0,
+                            "location": -1.0,
                             "value": 0.0,
                             "derivative": 0.0
                           },
                           {
-                            "location": 0.5,
-                            "value": 0.9250851288968213,
+                            "location": 0.7016007151708366,
+                            "value": 0.0,
+                            "derivative": 0.0
+                          },
+                          {
+                            "location": 0.999,
+                            "value": 1.0,
                             "derivative": 0.0
                           },
                           {
@@ -594,50 +721,6 @@
                         ]
                       }
                     },
-                    "argument2": {
-                      "type": "minecraft:spline",
-                      "spline": {
-                        "coordinate": {
-                          "type": "minecraft:noise",
-                          "noise": "fit:band4",
-                          "xz_scale": 1.12059,
-                          "y_scale": 0.0
-                        },
-                        "points": [
-                          {
-                            "location": -1.0,
-                            "value": 0.0,
-                            "derivative": 0.0
-                          },
-                          {
-                            "location": 0.5,
-                            "value": 0.0,
-                            "derivative": 0.0
-                          },
-                          {
-                            "location": 0.9043528889131122,
-                            "value": 1.0,
-                            "derivative": 0.0
-                          },
-                          {
-                            "location": 1.0,
-                            "value": 1.0,
-                            "derivative": 0.0
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              },
-              "argument2": {
-                "type": "minecraft:mul",
-                "argument1": 7.157285208046249,
-                "argument2": {
-                  "type": "minecraft:add",
-                  "argument1": {
-                    "type": "minecraft:mul",
-                    "argument1": 2.0,
                     "argument2": {
                       "type": "minecraft:spline",
                       "spline": {
@@ -666,115 +749,48 @@
                         ]
                       }
                     }
-                  },
-                  "argument2": -1.0
+                  }
                 }
-              }
-            },
-            "argument2": {
-              "type": "minecraft:mul",
-              "argument1": 51.89045837525925,
+              },
               "argument2": {
                 "type": "minecraft:mul",
-                "argument1": {
-                  "type": "minecraft:spline",
-                  "spline": {
-                    "coordinate": {
-                      "type": "minecraft:noise",
-                      "noise": "fit:band3",
-                      "xz_scale": 0.96681,
-                      "y_scale": 0.0
-                    },
-                    "points": [
-                      {
-                        "location": -1.0,
-                        "value": 0.0,
-                        "derivative": 0.0
-                      },
-                      {
-                        "location": 0.7016007151708366,
-                        "value": 0.0,
-                        "derivative": 0.0
-                      },
-                      {
-                        "location": 0.999,
-                        "value": 1.0,
-                        "derivative": 0.0
-                      },
-                      {
-                        "location": 1.0,
-                        "value": 1.0,
-                        "derivative": 0.0
-                      }
-                    ]
-                  }
-                },
+                "argument1": -30.0,
                 "argument2": {
                   "type": "minecraft:spline",
                   "spline": {
                     "coordinate": {
-                      "type": "minecraft:noise",
-                      "noise": "fit:band3",
-                      "xz_scale": 0.96681,
-                      "y_scale": 0.0
+                      "type": "minecraft:abs",
+                      "argument": {
+                        "type": "minecraft:noise",
+                        "noise": "fit:band5",
+                        "xz_scale": 1.3051,
+                        "y_scale": 0.0
+                      }
                     },
                     "points": [
                       {
-                        "location": -1.0,
+                        "location": 0.0,
+                        "value": 1.0,
+                        "derivative": 0.0
+                      },
+                      {
+                        "location": 0.2,
                         "value": 0.0,
                         "derivative": 0.0
                       },
                       {
-                        "location": 0.0,
-                        "value": 0.5,
-                        "derivative": 0.0
-                      },
-                      {
                         "location": 1.0,
-                        "value": 1.0,
+                        "value": 0.0,
                         "derivative": 0.0
                       }
                     ]
                   }
                 }
               }
-            }
+            },
+            "argument2": 1.3145292183111086
           },
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": -30.0,
-            "argument2": {
-              "type": "minecraft:spline",
-              "spline": {
-                "coordinate": {
-                  "type": "minecraft:abs",
-                  "argument": {
-                    "type": "minecraft:noise",
-                    "noise": "fit:band5",
-                    "xz_scale": 1.3051,
-                    "y_scale": 0.0
-                  }
-                },
-                "points": [
-                  {
-                    "location": 0.0,
-                    "value": 1.0,
-                    "derivative": 0.0
-                  },
-                  {
-                    "location": 0.2,
-                    "value": 0.0,
-                    "derivative": 0.0
-                  },
-                  {
-                    "location": 1.0,
-                    "value": 0.0,
-                    "derivative": 0.0
-                  }
-                ]
-              }
-            }
-          }
+          "argument2": -204.8651340749343
         },
         "argument2": {
           "type": "minecraft:mul",
@@ -885,7 +901,7 @@
     }
   },
   "ore_veins_enabled": true,
-  "sea_level": 64,
+  "sea_level": 48,
   "spawn_target": [
     {
       "continentalness": [
@@ -939,6 +955,18 @@
   "surface_rule": {
     "type": "minecraft:sequence",
     "sequence": [
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:y_above",
+          "threshold": 193,
+          "add_stone_depth": false
+        },
+        "then_run": {
+          "type": "minecraft:block",
+          "result": "minecraft:snow_block"
+        }
+      },
       {
         "type": "minecraft:condition",
         "if_true": {
