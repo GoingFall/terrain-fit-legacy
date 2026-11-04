@@ -396,10 +396,10 @@
               },
               "argument2": 1.4757835994982076
             },
-            "argument2": -374.50140971486917
+            "argument2": -335.50140971486917
           },
-          "min": 40.0,
-          "max": 300.0
+          "min": 39.0,
+          "max": 277.0
         },
         "argument2": {
           "type": "minecraft:mul",
@@ -797,10 +797,10 @@
               },
               "argument2": 1.4757835994982076
             },
-            "argument2": -374.50140971486917
+            "argument2": -335.50140971486917
           },
-          "min": 40.0,
-          "max": 300.0
+          "min": 39.0,
+          "max": 277.0
         },
         "argument2": {
           "type": "minecraft:mul",
@@ -911,7 +911,7 @@
     }
   },
   "ore_veins_enabled": true,
-  "sea_level": 48,
+  "sea_level": 40,
   "spawn_target": [
     {
       "continentalness": [

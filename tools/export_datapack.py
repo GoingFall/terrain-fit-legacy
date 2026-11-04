@@ -178,6 +178,8 @@ def main() -> int:
     ap.add_argument("--out", default="dist/fit-datapack")
     ap.add_argument("--name", default="fit")
     ap.add_argument("--target", help="metrics JSON: match its relief range and snow line")
+    ap.add_argument("--offset", type=float, default=0.0,
+                    help="blocks to add after normalisation (calibrate from an in-game measurement)")
     args = ap.parse_args()
 
     best = json.loads(Path(args.params).read_text(encoding="utf-8"))
@@ -215,21 +217,21 @@ def main() -> int:
         hdf0, _ = height_df(p)
         h = np.asarray(df_eval.ev(hdf0, np.zeros((np_x, np_z)), ctx), dtype=np.float64)
         a = (hi_t - lo_t) / max(float(h.max() - h.min()), 1e-3)
-        b = lo_t - a * float(h.min())
+        b = lo_t - a * float(h.min()) + args.offset
         print(f"   height normalisation: raw {h.min():.0f}..{h.max():.0f} -> "
               f"{lo_t:.0f}..{hi_t:.0f}  (x{a:.3f} +{b:.1f})")
         hdf, _ = height_df(p)
         scaled = add(mul(hdf, a), b)
-        bounded = clampf(scaled, 40.0, 300.0)
+        bounded = clampf(scaled, lo_t, hi_t)
         settings["noise_router"]["final_density"] = clampf(
             add(bounded, mul(const(-1.0), y_axis())), -8.0, 8.0)
         settings["noise_router"]["initial_density_without_jaggedness"] = settings["noise_router"]["final_density"]
 
         h2 = df_eval.solve_heights(settings["noise_router"]["final_density"], ctx,
                                    lo=-64.0, hi=320.0, iters=40)
-        wq = max(tgt["cover"]["water_pct"] / 100.0, 0.0)
-        sea = float(np.quantile(h2, min(wq, 0.5)))
-        settings["sea_level"] = int(round(sea))
+        # the target keeps only a sliver of water at the very bottom; a quantile of the solved
+        # distribution is not trustworthy (it is the offline noise, not the game's)
+        settings["sea_level"] = int(round(lo_t)) + 1
         print(f"   sea level {settings['sea_level']} (target water {tgt['cover']['water_pct']:.2f}%)"
               f"  range {h2.min():.0f}..{h2.max():.0f}")
 
