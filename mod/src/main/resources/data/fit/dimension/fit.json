@@ -1,0 +1,12 @@
+{
+  "type": "fit:fit",
+  "generator": {
+    "type": "fit:heightmap",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "minecraft:snowy_plains"
+    },
+    "sea_level": 74,
+    "snow_line": 193.0
+  }
+}

@@ -23,3 +23,11 @@ input/
 # fetched vanilla template (cached by tools/export_datapack.py)
 _tpl.json
 _tpl/
+
+# build toolchains and servers (regenerable, hundreds of MB)
+_mod/mdk/build/
+_mod/mdk/.gradle/
+_mod/
+_forgeserver/
+_tpl/
+_server/run/
