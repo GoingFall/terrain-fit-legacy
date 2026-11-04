@@ -20,6 +20,7 @@ import argparse
 import json
 import math
 import sys
+import zlib
 from pathlib import Path
 
 import numpy as np
@@ -51,7 +52,7 @@ class Ctx:
                            f"(have: {sorted(self.noises)[:8]})")
         feature = (1.0 / (2.0 ** entry["firstOctave"])) / max(xz_scale, 1e-6)
         freq = self.size / max(feature, 1e-6)
-        rng = np.random.default_rng(abs(hash(noise_id)) % (2**32))
+        rng = np.random.default_rng(zlib.crc32(noise_id.encode()) % (2**32))
         out = noise2d(self.size, self.size, freq, rng, octaves=len(entry["amplitudes"]))
         self._cache[key] = out
         return out

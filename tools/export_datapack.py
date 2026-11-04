@@ -220,8 +220,9 @@ def main() -> int:
               f"{lo_t:.0f}..{hi_t:.0f}  (x{a:.3f} +{b:.1f})")
         hdf, _ = height_df(p)
         scaled = add(mul(hdf, a), b)
+        bounded = clampf(scaled, 40.0, 300.0)
         settings["noise_router"]["final_density"] = clampf(
-            add(scaled, mul(const(-1.0), y_axis())), -8.0, 8.0)
+            add(bounded, mul(const(-1.0), y_axis())), -8.0, 8.0)
         settings["noise_router"]["initial_density_without_jaggedness"] = settings["noise_router"]["final_density"]
 
         h2 = df_eval.solve_heights(settings["noise_router"]["final_density"], ctx,
@@ -239,9 +240,11 @@ def main() -> int:
         if seq is not None:
             seq.insert(0, {
                 "type": "minecraft:condition",
-                "if_true": {"type": "minecraft:y_above", "threshold": int(round(snow_line)),
-                            "add_stone_depth": False},
-                "then_run": {"type": "minecraft:block", "result": "minecraft:snow_block"},
+                "if_true": {"type": "minecraft:y_above", "add_stone_depth": False,
+                            "anchor": {"absolute": int(round(snow_line))},
+                            "surface_depth_multiplier": 2},
+                "then_run": {"type": "minecraft:block",
+                             "result_state": {"Name": "minecraft:snow_block"}},
             })
             print(f"   snow surface rule: y > {int(round(snow_line))} -> snow_block")
 
@@ -250,6 +253,28 @@ def main() -> int:
     (out / "data" / ns / "worldgen" / "noise_settings").mkdir(parents=True, exist_ok=True)
     (out / "data" / ns / "dimension_type").mkdir(parents=True, exist_ok=True)
     (out / "data" / ns / "dimension").mkdir(parents=True, exist_ok=True)
+
+    # self-check: surface rule nodes must use the exact 1.20.1 field names
+    REQUIRED = {
+        "minecraft:block": {"result_state"},
+        "minecraft:y_above": {"add_stone_depth", "anchor", "surface_depth_multiplier"},
+        "minecraft:condition": {"if_true", "then_run"},
+    }
+
+    def check_rule(n, path="surface_rule"):
+        if isinstance(n, dict):
+            t = n.get("type")
+            if t in REQUIRED:
+                missing = REQUIRED[t] - set(n)
+                if missing:
+                    raise SystemExit(f"{path}: {t} missing {sorted(missing)}")
+            for k, v in n.items():
+                check_rule(v, f"{path}.{k}")
+        elif isinstance(n, list):
+            for i, v in enumerate(n):
+                check_rule(v, f"{path}[{i}]")
+    check_rule(settings["surface_rule"])
+    print("   surface rule schema: ok")
 
     noise_dir = out / "data" / ns / "worldgen" / "noise"
     noise_dir.mkdir(parents=True, exist_ok=True)
