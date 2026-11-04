@@ -1,12 +1,12 @@
-Biome wiring: default to a fixed biome, fix the parameter-list key
+Offline harness: validate and generate with a headless vanilla server
 
-Two load failures in a row came from the multi-biome path:
-  - inline {"biomes": [...]} inside the dimension -> "No key preset"
-  - {"preset": [list]} in the parameter-list registry -> "Not a string: [...]"
-The registry entry holds either {"preset": "<id>"} or {"biomes": [...]}; a list wrapped in "preset"
-was the second failure. Fixed the key, but the default is now a single minecraft:fixed biome again
-(snowy_plains, the reference's dominant biome and the one whose surface rule actually places snow)
-so the next launch is not another experiment.
+Every recent failure was a JSON schema guess validated by launching the client. This replaces that
+loop: tools/server_probe.py runs a real 1.20.1 server with the pack installed, reports the exact
+codec error (the same DataFixerUpper messages the client shows), and in generate mode forceloads a
+fixed 512-block area so terrain_metrics.py can measure what the game actually produced.
 
-Multi-biome stays available via --biome a,b once it has been verified in game.
-Rebuild as dist/terrain-fit-1.1.1.zip.
+- accepts the pack, optionally overrides minecraft:overworld with our noise settings so the
+  generated overworld can be measured
+- stops the server itself; skips truncated region files left behind by an interrupt
+- first real run: PACK PARSED, 6 region files generated, measured relief 221, flat 13.3%,
+  snow 8.4% (target 238 / 13.5% / 63.9%)

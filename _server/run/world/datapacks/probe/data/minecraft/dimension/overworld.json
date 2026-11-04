@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:overworld",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "fit:fit",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "minecraft:snowy_plains"
+    }
+  }
+}

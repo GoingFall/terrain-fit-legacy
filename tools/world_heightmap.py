@@ -109,6 +109,8 @@ def read_nbt(raw: bytes) -> dict:
 # ---------------------------------------------------------------- chunk decoding
 def iter_chunks(mca: Path):
     data = mca.read_bytes()
+    if len(data) < 8192:            # truncated / header-only file (server killed mid-write)
+        return
     for i in range(1024):
         off = int.from_bytes(data[i * 4 : i * 4 + 3], "big")
         cnt = data[i * 4 + 3]

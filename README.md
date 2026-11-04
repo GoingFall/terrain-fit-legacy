@@ -170,6 +170,22 @@ Fitted against the reference region (`r.0.0` of the map used during development)
 | ridge per km2 | 278 | 278 |
 | spectral bands >=512 / 256-512 / 128-256 / 64-128 | 24.2 / 35.9 / 37.7 / 1.7 % | 23.8 / 34.1 / 39.8 / 1.6 % |
 
+### Validating and generating without launching the game
+
+`tools/server_probe.py` runs a real vanilla 1.20.1 server headless with the pack installed. The
+client and the server share the same DataFixerUpper codecs, so a pack that parses there parses on
+your machine — and in generate mode it can pre-generate a fixed area that `terrain_metrics.py` then
+measures:
+
+```bash
+python tools/server_probe.py --pack dist/fit-datapack --mode validate      # ~15 s
+python tools/server_probe.py --pack dist/fit-datapack --mode generate --area 512
+python tools/terrain_metrics.py _server/run/world                           # what the game made
+```
+
+Requires `_server/server.jar` (vanilla 1.20.1) and Java 17. Every schema mistake that used to cost a
+game launch now costs 15 seconds and prints the exact codec error.
+
 ### Checking the export without launching the game
 
 `tools/df_eval.py` evaluates the exported density function itself: the surface is where the density
