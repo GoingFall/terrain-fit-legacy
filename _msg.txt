@@ -1,16 +1,16 @@
-Runtime parameters: a fitting iteration no longer needs a rebuild
+Two metric bugs that invalidated the snow tuning
 
-The mod now reads config/terrainfit.json at startup (FitParams), and tools/fit_model.py can write
-and read the same file, so the Python preview and the in-game generator stay on one parameter set.
+1. cover.*_pct divided by the whole grid instead of the valid columns. A mod world with 25600 valid
+   columns out of a 1024x1024 grid reported 37% snow where it actually had 95%.
 
-- FitParams: 26 parameters, loaded from the config dir, written back with defaults if absent
-- HeightmapChunkGenerator reads sea level and snow line from the same file
-- tools/fit_loop_mod.py: write config -> boot Forge server -> forceload a window -> measure ->
-  distance, all in one command, with --set and --search
+2. snow cover counted only "a snow layer above the ground" (s_raw > g_raw). A generated world paints
+   snow as the surface block, so the two sides were measuring different things. The surface block is
+   now included.
 
-Verified: changing reliefMacro from 180 to 300 with no rebuild moved the generated terrain from
-relief 112 to 161 (and the log shows "[terrain-fit] loaded params from ...").
+With both fixed: reference snow 63.9%, mod 95.3% at snowLine 170 and 97% at 175 -- i.e. altitude is
+not what drives the reference's snow at all. Its own hypsometry puts only ~10% of the area above
+y=193, so the 63.9% must come from the snowy_plains biome's surface rule across ~50% of the map.
+Matching it needs a snow *mask* (low-frequency noise), not a height threshold.
 
-First real search (reliefMacro 250..500, four points, 5m23s total): best distance 0.636 against the
-reference region, with slope p50/p90 exactly 0.71/1.58 at every point -- the remaining gap is in
-relief (204 vs 238) and snow cover (37.6% vs 63.9%), both directly searchable now.
+Also from this round: the mod loop runs one iteration in ~80 s (config write, server boot, forceload,
+measure) and currently reaches distance 0.62-0.65 against r.0.0.

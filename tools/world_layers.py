@@ -40,6 +40,7 @@ WATER_EXACT = {"water", "kelp", "kelp_plant", "seagrass", "tall_seagrass",
                "bubble_column", "sea_pickle"}
 ICE_EXACT = {"ice", "packed_ice", "blue_ice", "frosted_ice"}
 SNOW_EXACT = {"snow", "snow_block", "powder_snow"}
+SNOW_IDS = np.array([NAME2ID[n] for n in sorted(SNOW_EXACT) if n in NAME2ID], dtype=np.uint8)
 # ground blocks whose names contain a plant word and must NOT be treated as vegetation
 GROUND_EXACT = {"grass_block", "dirt", "coarse_dirt", "rooted_dirt", "podzol", "mycelium",
                 "dirt_path", "farmland", "mud", "packed_mud", "moss_block", "moss_carpet",
@@ -241,7 +242,7 @@ def collect_layers(world: Path, only_region: str | None = None, verbose: bool = 
     canopy = c_raw
 
     flags = np.zeros(ground.shape, dtype=np.uint8)
-    flags[s_raw > g_raw] += 1          # bit0: snow
+    flags[s_raw > g_raw] += 1          # bit0: snow layer above the ground
     flags[ice_on_water] += 2           # bit1: ice (only where it caps water)
     flags[c_raw > ground] += 4         # bit2: canopy
 
@@ -253,6 +254,8 @@ def collect_layers(world: Path, only_region: str | None = None, verbose: bool = 
     for a in (water, canopy):
         a[a <= -70] = -1e4             # absent -> far below ground
     water[ground <= -63] = -1e4        # no terrain -> no water surface (map borders / holes)
+    snow_surface = np.isin(sid_buf, SNOW_IDS)
+    flags[snow_surface] |= 1
     return ground, water, canopy, flags, sid_buf, rx0 * 512, rz0 * 512
 
 

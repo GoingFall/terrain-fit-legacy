@@ -177,6 +177,7 @@ def compute(ground: np.ndarray, water: np.ndarray, flags: np.ndarray,
 
     gy, gx = np.gradient(ground)
     slope = np.hypot(gx, gy)[valid]
+    denom = max(int(valid.sum()), 1)          # percentages are over valid columns, not the grid
     wet = (water > ground + 0.5) & valid
     snow = ((flags & 1) > 0) & valid
     ice = ((flags & 2) > 0) & valid
@@ -199,10 +200,10 @@ def compute(ground: np.ndarray, water: np.ndarray, flags: np.ndarray,
             "flat_pct": float((slope < 0.3).mean() * 100),
         },
         "cover": {
-            "water_pct": float(wet.mean() * 100),
-            "snow_pct": float(snow.mean() * 100),
-            "ice_pct": float(ice.mean() * 100),
-            "canopy_pct": float(canopy.mean() * 100),
+            "water_pct": float(wet.sum() / denom * 100),
+            "snow_pct": float(snow.sum() / denom * 100),
+            "ice_pct": float(ice.sum() / denom * 100),
+            "canopy_pct": float(canopy.sum() / denom * 100),
         },
         "snow_line": float(np.median(ground[snow])) if snow.any() else None,
         "ridge_per_km2": ridge_density(ground, valid),
