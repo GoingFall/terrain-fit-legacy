@@ -31,6 +31,8 @@ TEMPLATE_URL = ("https://raw.githubusercontent.com/misode/mcmeta/1.20.1-data/"
                 "data/minecraft/worldgen/noise_settings/overworld.json")
 CACHE = Path("_tpl")
 SIZE = 512.0        # the generator's own domain, in blocks: wavelength = SIZE / freq
+FREQ_SCALE = 1.0    # set from --freq-scale: the export needs different bands than the fit did
+WEIGHT_OVERRIDE: dict[str, float] = {}
 NS = "fit"          # set from --namespace in main()
 
 
@@ -147,7 +149,7 @@ def height_df(p: Params2) -> tuple[dict, dict]:
     VEG = band(p.mountain_freq, 2)
 
     # continent -> vertical profile (the spline is our hypsometry curve)
-    cont = spline(CONT, [(-1.0, 0.45), (-0.4, 0.68), (0.0, 0.82), (0.5, 0.92), (1.0, 1.0)])
+    cont = spline(CONT, [(0.0, 0.0), (1.0, 1.0)])     # linear: uniform height distribution
     h = add(const(p.base_level), mul(const(p.relief_macro), cont))
 
     # mountain mask from vegetation, gating the big relief
@@ -226,6 +228,12 @@ def main() -> int:
                          "split by temperature)")
     ap.add_argument("--window", type=int, default=512,
                     help="measurement window in blocks, matched to the reference region")
+    ap.add_argument("--freq-scale", type=float, default=1.0,
+                    help="multiply every band frequency (0.5 doubles the wavelengths)")
+    ap.add_argument("--weights", default=None,
+                    help="relief,massif,ridge,hill,spike weights (fractions of the range)")
+    ap.add_argument("--scale", type=float, default=None,
+                    help="override the affine slope; use 1.0 and calibrate from a measurement")
     ap.add_argument("--offset", type=float, default=0.0,
                     help="blocks to add after normalisation (calibrate from an in-game measurement)")
     args = ap.parse_args()
@@ -244,8 +252,12 @@ def main() -> int:
         print(f"cached template -> {tpl_path}")
     tpl = json.loads(tpl_path.read_text(encoding="utf-8"))
 
-    global NS
+    global NS, FREQ_SCALE, WEIGHT_OVERRIDE
     NS = args.namespace
+    FREQ_SCALE = args.freq_scale
+    if args.weights:
+        parts = [float(x) for x in args.weights.split(",")]
+        WEIGHT_OVERRIDE = dict(zip(("relief", "massif", "ridge", "hill", "spike"), parts))
     fd, band_noises = final_density(p)
     settings = json.loads(json.dumps(tpl))          # deep copy
     settings["noise_router"]["final_density"] = fd
@@ -265,6 +277,8 @@ def main() -> int:
         hdf0, _ = height_df(p)
         h = np.asarray(df_eval.ev(hdf0, np.zeros((np_x, np_z)), ctx), dtype=np.float64)
         a = (hi_t - lo_t) / max(float(h.max() - h.min()), 1e-3)
+        if args.scale is not None:
+            a = args.scale
         b = lo_t - a * float(h.min()) + args.offset
         print(f"   height normalisation: raw {h.min():.0f}..{h.max():.0f} -> "
               f"{lo_t:.0f}..{hi_t:.0f}  (x{a:.3f} +{b:.1f})")

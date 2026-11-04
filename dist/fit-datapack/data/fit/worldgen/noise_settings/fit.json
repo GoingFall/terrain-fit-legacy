@@ -68,23 +68,8 @@
                                     },
                                     "points": [
                                       {
-                                        "location": -1.0,
-                                        "value": 0.45,
-                                        "derivative": 0.0
-                                      },
-                                      {
-                                        "location": -0.4,
-                                        "value": 0.68,
-                                        "derivative": 0.0
-                                      },
-                                      {
                                         "location": 0.0,
-                                        "value": 0.82,
-                                        "derivative": 0.0
-                                      },
-                                      {
-                                        "location": 0.5,
-                                        "value": 0.92,
+                                        "value": 0.0,
                                         "derivative": 0.0
                                       },
                                       {
@@ -403,9 +388,9 @@
                       }
                     }
                   },
-                  "argument2": 2.1532752754819997
+                  "argument2": 4.67
                 },
-                "argument2": -732.7934668091814
+                "argument2": -520.8786272061008
               },
               "min": 39.0,
               "max": 277.0
@@ -478,23 +463,8 @@
                                     },
                                     "points": [
                                       {
-                                        "location": -1.0,
-                                        "value": 0.45,
-                                        "derivative": 0.0
-                                      },
-                                      {
-                                        "location": -0.4,
-                                        "value": 0.68,
-                                        "derivative": 0.0
-                                      },
-                                      {
                                         "location": 0.0,
-                                        "value": 0.82,
-                                        "derivative": 0.0
-                                      },
-                                      {
-                                        "location": 0.5,
-                                        "value": 0.92,
+                                        "value": 0.0,
                                         "derivative": 0.0
                                       },
                                       {
@@ -813,9 +783,9 @@
                       }
                     }
                   },
-                  "argument2": 2.1532752754819997
+                  "argument2": 4.67
                 },
-                "argument2": -732.7934668091814
+                "argument2": -520.8786272061008
               },
               "min": 39.0,
               "max": 277.0

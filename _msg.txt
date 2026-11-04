@@ -1,24 +1,17 @@
-Perf: a full fitting iteration is now ~43 s instead of minutes
+Server probe: generate inside the pack's own dimension (the overworld override never applied)
 
-Generation was pathological because the density function had no wrappers: the game evaluated the
-whole 128 KB noise graph per block. Vanilla wraps its own terrain in exactly these nodes:
+Four rounds of tuning were measuring vanilla terrain. A datapack cannot replace
+minecraft:overworld for an existing world: the dimension comes from level.dat's WorldGenSettings,
+so overriding data/minecraft/dimension/overworld.json only affects newly created worlds.
 
-  interpolated( blend_density( add( cache_2d(height), -y ) ) )
+- the probe now forceloads inside the pack's own dimension (`execute in fit:fit run forceload ...`)
+  and watches world/dimensions/<ns>/<name>/region
+- result: the first honest measurements of the exported generator. Five rounds, all still far from
+  the reference: relief reached 247 (target 238) and ridge density 273 (278), but the height
+  distribution is bimodal -- a flat plain at the bottom clamp plus rare peaks, so flat 52-87%
+  against 13.5% and p50 0.00 against 0.71
 
-  * cache_2d    -- the height term is 2D, so it is computed once per column
-  * interpolated -- sample the 4x4x4 cell grid and interpolate
-
-Measured with the headless server (256-block area, 64 chunks):
-
-  export      ~2 s
-  server boot 16.0 s   (JVM + registry, unavoidable per launch)
-  generation  ~21 s    (~0.3 s/chunk;  earlier: >7 min, never finished)
-  shutdown     1.1 s
-  measure     ~4 s
-  total       43 s
-
-Other fixes:
-- the probe blocked on readline when the server went quiet, so its stop condition never ran
-- the run directory is reused, so libraries are not re-unpacked every time
-- validate mode returns right after "Done (" instead of waiting for spawn chunks: 19 s
-- fit_loop runs a single server call (a bad pack fails at boot) and defaults to a 128-block area
+Conclusion: the datapack route cannot express our model faithfully. The height term's dynamic
+range in game is ~5x narrower than the offline evaluator predicts, so the affine fit either
+saturates the floor or overshoots, and each correction is a guess. A small mod that evaluates the
+fitted model directly removes this whole class of error.

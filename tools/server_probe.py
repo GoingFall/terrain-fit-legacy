@@ -82,7 +82,7 @@ def prepare(pack: Path, overwrite_overworld: bool, biome: str, fresh_world: bool
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, target)
 
-    if overwrite_overworld:
+    if False:
         settings = next(dst.glob("data/*/worldgen/noise_settings/*.json"))
         ns, name = settings.parents[2].name, settings.stem
         over = dst / "data" / "minecraft" / "dimension" / "overworld.json"
@@ -99,7 +99,8 @@ def prepare(pack: Path, overwrite_overworld: bool, biome: str, fresh_world: bool
     return WORK
 
 
-def run(timeout: int, commands: list[str] | None) -> tuple[int, str]:
+def run(timeout: int, commands: list[str] | None,
+        dimension: str = "fit:fit") -> tuple[int, str]:
     """Read the server's stdout on a thread, so a quiet server cannot block the stop condition."""
     cmd = ["java", "-Xmx2G", "-jar", str(SERVER.resolve()), "--nogui"]
     proc = subprocess.Popen(cmd, cwd=WORK, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -141,7 +142,8 @@ def run(timeout: int, commands: list[str] | None) -> tuple[int, str]:
             if started and commands is None:
                 break                       # validate only: the registry already loaded
             if started:
-                region = WORK / "world" / "region"
+                ns_dim, name_dim = dimension.split(":")
+                region = WORK / "world" / "dimensions" / ns_dim / name_dim / "region"
                 size = sum(f.stat().st_size for f in region.glob("*.mca")) if region.exists() else 0
                 if size != last_size:
                     last_size = size
@@ -176,6 +178,7 @@ def main() -> int:
     ap.add_argument("--area", type=int, default=256)
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--biome", default="minecraft:snowy_plains")
+    ap.add_argument("--dimension", default="fit:fit")
     args = ap.parse_args()
 
     if not SERVER.exists():
@@ -186,14 +189,15 @@ def main() -> int:
     commands = None
     if args.mode == "generate":
         n = max(1, args.area // 16 // 2)
+        dim = args.dimension
         commands = [
-            f"forceload add {-n} {-n} -1 -1",
-            f"forceload add {-n} 0 -1 {n - 1}",
-            f"forceload add 0 {-n} {n - 1} -1",
-            f"forceload add 0 0 {n - 1} {n - 1}",
+            f"execute in {dim} run forceload add {-n} {-n} -1 -1",
+            f"execute in {dim} run forceload add {-n} 0 -1 {n - 1}",
+            f"execute in {dim} run forceload add 0 {-n} {n - 1} -1",
+            f"execute in {dim} run forceload add 0 0 {n - 1} {n - 1}",
         ]
 
-    code, log = run(args.timeout, commands)
+    code, log = run(args.timeout, commands, args.dimension)
     problems = [l for l in log.splitlines() if any(k in l for k in ERROR_MARKERS)]
     print(f"exit={code}  log lines={len(log.splitlines())}")
     if problems:
@@ -204,7 +208,8 @@ def main() -> int:
 
     print("PACK PARSED: no registry or codec errors")
     if args.mode == "generate":
-        region = WORK / "world" / "region"
+        ns_dim, name_dim = args.dimension.split(":")
+        region = WORK / "world" / "dimensions" / ns_dim / name_dim / "region"
         files = list(region.glob("*.mca")) if region.exists() else []
         size = sum(f.stat().st_size for f in files) // 1024 // 1024
         print(f"generated {len(files)} region file(s), {size} MB -> {region}")
