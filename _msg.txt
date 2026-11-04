@@ -1,18 +1,21 @@
-Skeleton model: placed landforms instead of stationary noise
+Skeleton model ported to the mod, and measured in game
 
-tools/skeleton_model.py replaces the noise sum with a handful of oriented gaussian massifs (plus
-valley polylines), seeded at the reference's own peaks and refined by coordinate descent against the
-reference height field.
+FitParams now carries a massif list (oriented gaussians) and optional valley polylines; FitTerrain
+switches to the skeleton whenever that list is non-empty, so a config edit changes the whole terrain
+generator with no rebuild.
 
-    noise model      rmse 38.1 blocks   correlation 0.64
-    skeleton model   rmse  9.1 blocks   correlation 0.98
+In-game measurement of the skeleton (11 massifs fitted to region r.0.0):
 
-preview/skeleton_compare.png shows why: the massifs reproduce the reference's large slopes and the
-valley between them, which the noise model could never place.
+    relief 209 (target 238)     slope p50 0.71 (exact)    p99 2.50 (exact)
+    ridge density 22 vs 278     water 3.7% vs 0.59%       snow 28.2% vs 63.9%
+    distance 0.513  -- the noise model managed 0.62-0.68
 
-preview/skeleton_quantised.png answers the terracing question: quantising the smooth skeleton to
-whole blocks reproduces the reference's contour-like 1-block steps, so the author's fine terraces are
-not a missing feature but a consequence of quantising a smooth slope.
+Two findings from this run:
+- switching the test biome from snowy_plains to plains cut snow from 85% to 28% without touching our
+  own rule, which confirms the biome's own snow layers were stacking on top of ours
+- ridge density collapsed from 291 to 22 at the same time: the earlier 291 was merely the 1-block
+  snow-layer bumps being counted as crests. The skeleton is genuinely too smooth, which is also why
+  the 64-128 Hz band is empty.
 
-Next: port the massif list into the mod's config (it is a sum of gaussians, trivial in Java) and
-check the in-game result with the existing loop.
+Next: add a detail noise layer on top of the skeleton (and re-fit it), then raise the snow line's
+coverage to the reference's 64%.
