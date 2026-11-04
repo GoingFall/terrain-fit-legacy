@@ -193,7 +193,7 @@ def biome_source(spec: str) -> dict:
                 "weirdness": full, "depth": 0, "offset": 0,
             },
         })
-    return {"type": "minecraft:multi_noise", "biomes": out}
+    return {"type": "minecraft:multi_noise", "preset": f"{NS}:fit"}
 
 
 def main() -> int:
@@ -307,6 +307,23 @@ def main() -> int:
                 check_rule(v, f"{path}[{i}]")
     check_rule(settings["surface_rule"])
     print("   surface rule schema: ok")
+
+    # multi_noise presets live in their own registry
+    names = [b.strip() for b in args.biome.split(",") if b.strip()]
+    if len(names) > 1:
+        full = {"min_inclusive": -1.0, "max_inclusive": 1.0}
+        step = 2.0 / len(names)
+        entries = []
+        for i, biome_name in enumerate(names):
+            lo = -1.0 + i * step
+            entries.append({"biome": biome_name, "parameters": {
+                "temperature": {"min_inclusive": round(lo, 4), "max_inclusive": round(lo + step, 4)},
+                "humidity": full, "continentalness": full, "erosion": full,
+                "weirdness": full, "depth": 0, "offset": 0}})
+        plist = out / "data" / ns / "worldgen" / "multi_noise_biome_source_parameter_list"
+        plist.mkdir(parents=True, exist_ok=True)
+        (plist / "fit.json").write_text(json.dumps({"preset": entries}, indent=2), encoding="utf-8")
+        print(f"   biome preset: {ns}:fit ({len(entries)} biomes)")
 
     noise_dir = out / "data" / ns / "worldgen" / "noise"
     noise_dir.mkdir(parents=True, exist_ok=True)

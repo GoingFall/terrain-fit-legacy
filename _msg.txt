@@ -1,0 +1,11 @@
+Multi-biome dimensions need a preset in 1.20.1, not an inline list
+
+Log said: No key preset in MapLike[{type: multi_noise, biomes: [...]}]. The inline biome list form
+is not accepted by the 1.20.1 codec, so a multi-biome dimension needs a
+data/<ns>/worldgen/multi_noise_biome_source_parameter_list/<name>.json registry entry, referenced
+as {"type":"minecraft:multi_noise","preset":"<ns>:<name>"}.
+
+- the exporter emits that parameter list when more than one biome is requested, and keeps a
+  minecraft:fixed source for a single biome
+- fixed a clobbered loop variable that renamed the dimension file after the last biome
+- rebuild as dist/terrain-fit-1.1.0.zip (snowy_plains / plains split by temperature)
